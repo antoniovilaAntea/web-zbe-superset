@@ -1,0 +1,12 @@
+.contaminantes {
+  display: flex;
+  flex-wrap: wrap;
+}
+.contaminantes__fila {
+  display: flex;
+  width: 100%;
+}
+.contaminantes__fila__elemento {
+  flex: 1;
+  margin: 5px; /* Puedes ajustar el margen según tu diseño */
+}
