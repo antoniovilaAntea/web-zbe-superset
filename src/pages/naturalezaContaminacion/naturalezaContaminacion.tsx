@@ -1,0 +1,62 @@
+import React from "react";
+
+import "./naturalezaContaminacion.css";
+
+const NaturalezaContaminacion = () => {
+  return (
+    <>
+      <div style={{ color: "#53a5dc" }}>
+        Sectores y fuentes de emisión responsables de la contaminación
+      </div>
+      <div className="naturaleza">
+        <div id="divImagen">
+          <img
+            src="https://i.ibb.co/KK8J4rV/Coru-a.png"
+            alt="Coru-a"
+            width="100%"
+            height="100%"
+          />
+        </div>
+        <div className="naturaleza__graphs">
+          <div className="naturaleza__graphs__first">
+            <div className="naturaleza__graphs__first__one">
+              <p>Actividad industrial</p>
+              <iframe
+                width="600"
+                height="400"
+                seamless
+                frameBorder="0"
+                scrolling="no"
+                src="http://localhost:8088/superset/explore/p/EqoNG58ldB0/?standalone=1&height=400"
+              ></iframe>
+            </div>
+            <div className="naturaleza__graphs__first__two">
+              <p>Trafico rodado</p>
+              <iframe
+                width="600"
+                height="400"
+                seamless
+                frameBorder="0"
+                scrolling="no"
+                src="http://localhost:8088/superset/explore/p/1PqpkR2l69d/?standalone=1&height=400"
+              ></iframe>
+            </div>
+          </div>
+          <div className="naturaleza__graphs__second">
+            <p>Actividad portuaria</p>
+            <iframe
+              width="600"
+              height="400"
+              seamless
+              frameBorder="0"
+              scrolling="no"
+              src="http://localhost:8088/superset/explore/p/GOXpRG6NWdz/?standalone=1&height=400"
+            ></iframe>
+          </div>
+        </div>
+      </div>
+    </>
+  );
+};
+
+export default NaturalezaContaminacion;
