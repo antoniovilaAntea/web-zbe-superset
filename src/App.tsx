@@ -3,6 +3,9 @@ import "./App.css";
 import React from "react";
 import PrincipalesContaminantes from "./pages/principalesContaminates/PrincipalesContaminantes.tsx";
 import CalculoDeEmisiones from "./pages/calculoDeEmisiones/calculoDeEmisiones.tsx";
+import Map from "./components/Map/Map.tsx";
+import SuperficieContaminada from "./pages/superficieContaminada/superficieContaminada.tsx";
+import NaturalezaContaminacion from "./pages/naturalezaContaminacion/naturalezaContaminacion.tsx";
 
 function App() {
   const [value, setValue] = React.useState("one");
@@ -17,7 +20,7 @@ function App() {
         <h4>Zona de bajas emisiones - A Coruña</h4>
       </header>
       <div className="App-body">
-        <Tabs value={value} onChange={handleChange}>
+        <Tabs className="tabs" value={value} onChange={handleChange}>
           <Tab value="one" label="Principales contaminantes" wrapped></Tab>
           <Tab value="two" label="Cálculo de emisiones de CO2" wrapped></Tab>
           <Tab value="three" label="Superficie contaminada" wrapped></Tab>
@@ -32,6 +35,8 @@ function App() {
         </Tabs>
         {value === "one" && <PrincipalesContaminantes />}
         {value === "two" && <CalculoDeEmisiones />}
+        {value === "three" && <SuperficieContaminada />}
+        {value === "four" && <NaturalezaContaminacion />}
       </div>
     </div>
   );
