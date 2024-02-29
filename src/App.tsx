@@ -6,6 +6,7 @@ import CalculoDeEmisiones from "./pages/calculoDeEmisiones/calculoDeEmisiones.ts
 import Map from "./components/Map/Map.tsx";
 import SuperficieContaminada from "./pages/superficieContaminada/superficieContaminada.tsx";
 import NaturalezaContaminacion from "./pages/naturalezaContaminacion/naturalezaContaminacion.tsx";
+import EficienciaEnergetica from "./pages/eficienciaEnergetica/eficienciaEnergetica.tsx";
 
 function App() {
   const [value, setValue] = React.useState("one");
@@ -37,6 +38,7 @@ function App() {
         {value === "two" && <CalculoDeEmisiones />}
         {value === "three" && <SuperficieContaminada />}
         {value === "four" && <NaturalezaContaminacion />}
+        {value === "six" && <EficienciaEnergetica />}
       </div>
     </div>
   );
