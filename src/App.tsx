@@ -3,10 +3,11 @@ import "./App.css";
 import React from "react";
 import PrincipalesContaminantes from "./pages/principalesContaminates/PrincipalesContaminantes.tsx";
 import CalculoDeEmisiones from "./pages/calculoDeEmisiones/calculoDeEmisiones.tsx";
-import Map from "./components/Map/Map.tsx";
 import SuperficieContaminada from "./pages/superficieContaminada/superficieContaminada.tsx";
 import NaturalezaContaminacion from "./pages/naturalezaContaminacion/naturalezaContaminacion.tsx";
 import EficienciaEnergetica from "./pages/eficienciaEnergetica/eficienciaEnergetica.tsx";
+import MonitorizacionRuido from "./pages/monitorizacionRuido/monitorizacionRuido.tsx";
+import ImpactoContaminacion from "./pages/impactoContaminacion/impactoContaminacion.tsx";
 
 function App() {
   const [value, setValue] = React.useState("one");
@@ -38,7 +39,9 @@ function App() {
         {value === "two" && <CalculoDeEmisiones />}
         {value === "three" && <SuperficieContaminada />}
         {value === "four" && <NaturalezaContaminacion />}
+        {value === "five" && <ImpactoContaminacion />}
         {value === "six" && <EficienciaEnergetica />}
+        {value === "seven" && <MonitorizacionRuido />}
       </div>
     </div>
   );
