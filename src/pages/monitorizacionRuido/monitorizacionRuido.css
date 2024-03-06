@@ -1,0 +1,19 @@
+.monitorizacion {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  align-items: center;
+}
+
+.monitorizacion__row {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  width: 90%;
+  height: 400px;
+  margin-bottom: 20px;
+}
+.monitorizacion__row div {
+  margin-left: 20px;
+  margin-bottom: 20px;
+}
