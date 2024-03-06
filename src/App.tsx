@@ -1,5 +1,4 @@
 import { Tab, Tabs } from "@mui/material";
-import "./App.css";
 import React from "react";
 import PrincipalesContaminantes from "./pages/principalesContaminates/PrincipalesContaminantes.tsx";
 import CalculoDeEmisiones from "./pages/calculoDeEmisiones/calculoDeEmisiones.tsx";
@@ -8,6 +7,8 @@ import NaturalezaContaminacion from "./pages/naturalezaContaminacion/naturalezaC
 import EficienciaEnergetica from "./pages/eficienciaEnergetica/eficienciaEnergetica.tsx";
 import MonitorizacionRuido from "./pages/monitorizacionRuido/monitorizacionRuido.tsx";
 import ImpactoContaminacion from "./pages/impactoContaminacion/impactoContaminacion.tsx";
+
+import "./App.css";
 
 function App() {
   const [value, setValue] = React.useState("one");

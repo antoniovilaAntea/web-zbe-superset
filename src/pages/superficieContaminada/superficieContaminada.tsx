@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import Map from "../../components/Map/Map.tsx";
-import { useToggle } from "@uidotdev/usehooks";
 
 import "./superficieContaminada.css";
 

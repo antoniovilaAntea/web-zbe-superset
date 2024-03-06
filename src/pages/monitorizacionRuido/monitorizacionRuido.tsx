@@ -7,13 +7,8 @@ const MonitorizacionRuido = () => {
   return (
     <div className="monitorizacion">
       <div className="monitorizacion__row">
-        {/* <div id="map"></div> */}
-        {/* <Mapmarkers></Mapmarkers>
-        <Mapmarkers></Mapmarkers> */}
         <MapRuido id="map1"></MapRuido>
         <MapRuido id="map2"></MapRuido>
-
-        {/* <div>Mapa b</div> */}
         <div>
           <iframe
             width="400"
@@ -32,7 +27,6 @@ const MonitorizacionRuido = () => {
           <img src="https://i.ibb.co/ygCg6PC/ruido.png"></img>
         </div>
       </div>
-      <script src="./script.js"></script>
     </div>
   );
 };

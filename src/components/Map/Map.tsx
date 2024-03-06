@@ -1,13 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "leaflet/dist/leaflet.css";
-import {
-  MapContainer,
-  Polygon,
-  TileLayer,
-  Tooltip,
-  useMapEvents,
-} from "react-leaflet";
-import L, { LatLngExpression } from "leaflet";
+import { MapContainer, Polygon, TileLayer, Tooltip } from "react-leaflet";
+import { LatLngExpression } from "leaflet";
 
 type Props = {
   zona: string;
