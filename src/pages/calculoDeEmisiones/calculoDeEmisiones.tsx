@@ -1,17 +1,110 @@
 import React, { useState } from "react";
-import { TextField } from "@mui/material";
 
 import "./calculoDeEmisiones.css";
 
 const CalculoDeEmisiones = () => {
-  const [kmsTurismos, setkmsTurismos] = useState();
-  const [kmsLigeros, setkmsLigeros] = useState();
-  const [kmsPesados, setkmsPesados] = useState();
-  const [kmsAutobuses, setkmsAutobuses] = useState();
-  const [kmsCiclomotores, setkmsCiclomotores] = useState();
-  const [kmsTaxis, setkmsTaxis] = useState();
+  const valores = [
+    {
+      "turismo-gasolina": 138,
+      "turismo-diesel": 120,
+      "turismo-gpl": 95,
+      "ligero-gasolina": 195,
+      "ligero-diesel": 162,
+      "ligero-gpl": 135,
+      "pesado-gasolina": 450,
+      "pesado-diesel": 410,
+      "pesado-gpl": 360,
+      "autobus-gasolina": 450,
+      "autobus-diesel": 410,
+      "autobus-gpl": 360,
+      "ciclomotor-gasolina": 450,
+      "ciclomotor-diesel": 410,
+      "taxi-gasolina": 195,
+      "taxi-diesel": 162,
+      "taxi-gpl": 135,
+    },
+  ];
 
-  const handleChange = () => {};
+  const numVehTur = [
+    {
+      gasolina: 1234,
+      diesel: 2345,
+      gpl: 120,
+    },
+  ];
+  const numVehLig = [
+    {
+      gasolina: 2500,
+      diesel: 1251,
+      gpl: 100,
+    },
+  ];
+  const numVehPes = [
+    {
+      gasolina: 5000,
+      diesel: 2365,
+      gpl: 36,
+    },
+  ];
+  const numVehBus = [
+    {
+      gasolina: 541,
+      diesel: 547,
+      gpl: 12,
+    },
+  ];
+  const numVehCiclo = [
+    {
+      gasolina: 1234,
+      diesel: 2345,
+      gpl: 120,
+    },
+  ];
+  const numVehTaxi = [
+    {
+      gasolina: 1234,
+      diesel: 2345,
+      gpl: 120,
+    },
+  ];
+  const [kmsTurismos, setkmsTurismos] = useState(
+    numVehTur[0].gasolina * valores[0]["turismo-gasolina"] +
+      numVehTur[0].diesel * valores[0]["turismo-diesel"] +
+      numVehTur[0].gpl * valores[0]["turismo-gpl"]
+  );
+  const [kmsLigeros, setkmsLigeros] = useState(
+    numVehLig[0].gasolina * valores[0]["ligero-gasolina"] +
+      numVehLig[0].diesel * valores[0]["ligero-diesel"] +
+      numVehLig[0].gpl * valores[0]["ligero-gpl"]
+  );
+  const [kmsPesados, setkmsPesados] = useState(
+    numVehPes[0].gasolina * valores[0]["pesado-gasolina"] +
+      numVehPes[0].diesel * valores[0]["pesado-diesel"] +
+      numVehPes[0].gpl * valores[0]["pesado-gpl"]
+  );
+  const [kmsAutobuses, setkmsAutobuses] = useState(
+    numVehBus[0].gasolina * valores[0]["autobus-gasolina"] +
+      numVehBus[0].diesel * valores[0]["autobus-diesel"] +
+      numVehBus[0].gpl * valores[0]["autobus-gpl"]
+  );
+  const [kmsCiclomotores, setkmsCiclomotores] = useState(
+    numVehCiclo[0].gasolina * valores[0]["ciclomotor-gasolina"] +
+      numVehCiclo[0].diesel * valores[0]["ciclomotor-diesel"]
+  );
+  const [kmsTaxis, setkmsTaxis] = useState(
+    numVehTaxi[0].gasolina * valores[0]["taxi-gasolina"] +
+      numVehTaxi[0].diesel * valores[0]["taxi-diesel"] +
+      numVehTaxi[0].gpl * valores[0]["taxi-gpl"]
+  );
+  const [teqaño, setTeqaño] = useState<Number>(
+    kmsTurismos +
+      kmsLigeros +
+      kmsPesados +
+      kmsAutobuses +
+      kmsCiclomotores +
+      kmsTaxis
+  );
+  // setkmsTurismos(numVehTur[0].gasolina * valores[0]["turismo-gasolina"]);
 
   return (
     <div className="calculo">
@@ -70,15 +163,7 @@ const CalculoDeEmisiones = () => {
         </table>
       </div>
       <div className="calculo__calculadora">
-        <div id="totalTeq">
-          <TextField
-            id="standard-basic"
-            label=""
-            variant="standard"
-            onChange={handleChange}
-          />
-          Teq/año
-        </div>
+        <div id="totalTeq">{teqaño.toString()} Teq/año</div>
         <table id="teqTable">
           <thead>
             <tr>
