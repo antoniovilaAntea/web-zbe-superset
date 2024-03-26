@@ -24,6 +24,7 @@
 .App-header {
   background-color: #f7f7f7;
   color: #23bce2;
+  width: 80%;
 }
 
 .App-body {
@@ -57,4 +58,12 @@ p {
 
 .tabs {
   margin-bottom: 2em;
+}
+.ayuda {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end;
+  font-size: 16px;
+  margin-top: 2em;
 }
