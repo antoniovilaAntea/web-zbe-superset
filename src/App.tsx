@@ -1,7 +1,7 @@
 import { Tab, Tabs } from "@mui/material";
 import React from "react";
 //@ts-ignore
-import pdfFile from "./resources/pruebapdf.pdf";
+import pdfFile from "./resources/Emisiones contaminantes ZBE.pdf";
 import PrincipalesContaminantes from "./pages/principalesContaminates/PrincipalesContaminantes.tsx";
 import CalculoDeEmisiones from "./pages/calculoDeEmisiones/calculoDeEmisiones.tsx";
 import SuperficieContaminada from "./pages/superficieContaminada/superficieContaminada.tsx";
