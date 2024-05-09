@@ -5,10 +5,16 @@ import "./superficieContaminada.css";
 
 const SuperficieContaminada = () => {
   const [zona, setZona] = useState("");
-  const pobZona1 = "< 8870";
-  const supZona1 = "< 8.28";
-  const pobZona2 = "< 23363";
-  const supZona2 = "< 16.13";
+  const numpobZona1 = 8870;
+  const numpobZona2 = 23365;
+  const numsupZona1 = 2.2;
+  const numsupZona2 = 2.7;
+  const pobZona1 = "< " + numpobZona1.toString();
+  const supZona1 = "< " + numsupZona1.toString();
+  const pobZona2 = "< " + numpobZona2.toString();
+  const supZona2 = "< " + numsupZona2.toString();
+  const pobTotal = "< " + (numpobZona1 + numpobZona2).toString();
+  const supTotal = "< " + (numsupZona1 + numsupZona2).toString();
   return (
     <div className="superficie">
       {/* {//aun asi habrñia que cambair para identificar la zona y dentro del map cambiar el color de esa zona} */}
@@ -61,18 +67,21 @@ const SuperficieContaminada = () => {
               {pobZona2}
             </td>
           </tr>
-          {/* <tr>
+          <tr>
             <td>
               <label id="sectionC" />
+              Total
             </td>
             <td>
               <label id="periodInteresC" />
+              {supTotal}
             </td>
             <td>
               <label id="superficieContaminadaC" />
+              {pobTotal}
             </td>
           </tr>
-          <tr>
+          {/* <tr>
             <td>
               <label id="sectionC" />
             </td>
