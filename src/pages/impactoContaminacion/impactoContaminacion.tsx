@@ -9,7 +9,7 @@ const ImpactoContaminacion = () => {
         seamless
         frameBorder="0"
         scrolling="no"
-        src="http://localhost:8088/superset/explore/p/VyLp9oD4Rxq/?standalone=1&height=400"
+        src="http://localhost:8088/superset/explore/p/LgWNYPEpajq/?standalone=1&height=400"
       ></iframe>
     </div>
   );

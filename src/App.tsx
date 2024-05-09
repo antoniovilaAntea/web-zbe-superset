@@ -9,6 +9,7 @@ import NaturalezaContaminacion from "./pages/naturalezaContaminacion/naturalezaC
 import EficienciaEnergetica from "./pages/eficienciaEnergetica/eficienciaEnergetica.tsx";
 import MonitorizacionRuido from "./pages/monitorizacionRuido/monitorizacionRuido.tsx";
 import ImpactoContaminacion from "./pages/impactoContaminacion/impactoContaminacion.tsx";
+import { CalculadoraParticulas } from "./pages/calculadoraParticulas/calculadoraParticulas.tsx";
 
 import "./App.css";
 
@@ -22,12 +23,16 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
+        <h4>Zona de bajas emisiones - A Coruña</h4>
         <div className="ayuda">
+          <button className="admin" onClick={() => setValue("Admin")}>
+            Administrador
+          </button>
+
           <a href={pdfFile} target="_blank" rel={"noreferrer"}>
             Ayuda
           </a>
         </div>
-        <h4>Zona de bajas emisiones - A Coruña</h4>
       </header>
       <div className="App-body">
         <Tabs className="tabs" value={value} onChange={handleChange}>
@@ -66,6 +71,7 @@ function App() {
         {value === "imapcto" && <ImpactoContaminacion />}
         {value === "eficiencia" && <EficienciaEnergetica />}
         {value === "monitorizacion" && <MonitorizacionRuido />}
+        {value === "Admin" && <CalculadoraParticulas />}
       </div>
     </div>
   );

@@ -16,6 +16,7 @@ const MonitorizacionRuido = () => {
             seamless
             frameBorder="0"
             scrolling="no"
+            //TODO: cambiar el gráfico del iframe para que sea el nuevo gráfico de la monitorizacion de Ruido que tengo que hacer
             src="http://localhost:8088/superset/explore/p/rkVpXzr4yPJ/?standalone=1&height=600"
           ></iframe>
         </div>

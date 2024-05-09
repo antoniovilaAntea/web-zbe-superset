@@ -1,0 +1,52 @@
+.formulario {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+
+  .tipo {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: space-between;
+    margin-top: 2em;
+    label {
+      color: rgb(83, 165, 220);
+      font-size: 20px;
+    }
+    select {
+      background-color: #fcfcfc;
+      border: 0.5px solid #383c41;
+    }
+  }
+  .cantidad {
+    margin-top: 1em;
+    margin-bottom: 1em;
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: space-between;
+    label {
+      color: rgb(83, 165, 220);
+      font-size: 20px;
+    }
+    input {
+      width: 100px;
+      background-color: #fcfcfc;
+      border: 0.5px solid #383c41;
+    }
+  }
+  .botones {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    flex-direction: row;
+    button {
+      color: #f7f7f7;
+      background-color: #6092c5;
+      border: 0.5px solid #1976d2;
+      border-radius: 5px;
+      height: 2.5em;
+      padding: 0.5em;
+    }
+  }
+}

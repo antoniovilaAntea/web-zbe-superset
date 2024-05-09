@@ -9,4 +9,9 @@
 .contaminantes__fila__elemento {
   flex: 1;
   margin: 5px; /* Puedes ajustar el margen según tu diseño */
+  .info {
+    font-size: 15px;
+    margin-top: 0 !important;
+    color: #769fbd;
+  }
 }

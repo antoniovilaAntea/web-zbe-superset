@@ -27,7 +27,7 @@ const NaturalezaContaminacion = () => {
                 seamless
                 frameBorder="0"
                 scrolling="no"
-                src="http://localhost:8088/superset/explore/p/EqoNG58ldB0/?standalone=1&height=400"
+                src="http://localhost:8088/superset/explore/p/DJy45zGlVdM/?standalone=1&height=400"
               ></iframe>
             </div>
             <div className="naturaleza__graphs__first__two">
@@ -38,7 +38,7 @@ const NaturalezaContaminacion = () => {
                 seamless
                 frameBorder="0"
                 scrolling="no"
-                src="http://localhost:8088/superset/explore/p/1PqpkR2l69d/?standalone=1&height=400"
+                src="http://localhost:8088/superset/explore/p/OGZl38zpw3q/?standalone=1&height=400"
               ></iframe>
             </div>
           </div>
@@ -50,7 +50,7 @@ const NaturalezaContaminacion = () => {
               seamless
               frameBorder="0"
               scrolling="no"
-              src="http://localhost:8088/superset/explore/p/GOXpRG6NWdz/?standalone=1&height=400"
+              src="http://localhost:8088/superset/explore/p/39ZldqvpJO2/?standalone=1&height=400"
             ></iframe>
           </div>
         </div>
