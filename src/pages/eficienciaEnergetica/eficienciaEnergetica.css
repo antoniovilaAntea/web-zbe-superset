@@ -4,3 +4,16 @@
 .css-nxtj6w {
   display: none;
 }
+
+.eficiencia {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* Dos columnas */
+  grid-template-rows: auto auto; /* Dos filas */
+  gap: 20px; /* Espacio entre los gráficos */
+  align-items: center;
+  justify-content: center;
+  div p {
+    font-size: 15px;
+    margin-top: 0;
+  }
+}
