@@ -7,15 +7,19 @@
     display: flex;
     flex-direction: row;
     width: 100%;
-    justify-content: space-between;
+    justify-content: center;
+
     margin-top: 2em;
+    margin-bottom: 1em;
     label {
       color: rgb(83, 165, 220);
       font-size: 20px;
+      margin-right: 3em;
     }
     select {
-      background-color: #fcfcfc;
-      border: 0.5px solid #383c41;
+      background-color: #f7f7f7;
+      border: 0.5px solid #53a5dc;
+      color: #53a5dc;
     }
   }
   .cantidad {
@@ -38,8 +42,9 @@
   .botones {
     display: flex;
     width: 100%;
-    justify-content: space-between;
+    justify-content: space-evenly;
     flex-direction: row;
+
     button {
       color: #f7f7f7;
       background-color: #6092c5;
@@ -47,6 +52,38 @@
       border-radius: 5px;
       height: 2.5em;
       padding: 0.5em;
+      margin: 2em;
+    }
+  }
+}
+
+.tablas {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  margin-bottom: 2em;
+
+  .introducir {
+    margin-right: 2em;
+    th {
+      text-align: center;
+    }
+    td input {
+      border: none;
+      border-bottom: 1px solid #53a5dc;
+      color: #53a5dc;
+      text-align: center;
+      width: 90%;
+      background-color: #f7f7f7;
+    }
+  }
+  .resultados {
+    th {
+      text-align: center;
+    }
+    .val {
+      text-align: center;
     }
   }
 }
