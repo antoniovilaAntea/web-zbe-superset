@@ -10,9 +10,11 @@ type Props = {
   lat?: number;
   lng?: number;
   ruido?: number;
+  tipo: string;
+  locations: any[];
 };
 
-const MapRuido = ({ id }: Props) => {
+const MapRuido = ({ id, tipo, locations }: Props) => {
   // MARKERS Crea los markers en cada uno de los puntos que queremos, con coord (LAT, LNG, nivel de ruido)
   const [map, setMap] = useState<Map>();
   const mapInit = useRef<boolean>(false);
@@ -41,46 +43,48 @@ const MapRuido = ({ id }: Props) => {
   }
   const color = ["#64C800", "#FFFF00", "#FFCD69", "#FF8000", "#FF0000"];
 
-  const locations = [
-    [43.358991542213786, -8.420026085644725, 52],
-    [43.36382132174872, -8.423590674215513, 57],
-    [43.36008122118319, -8.417352644216635, 61],
-    [43.36075857932755, -8.415448829866328, 66],
-    [43.36423360218986, -8.418203284671028, 75],
-    [43.36891573344643, -8.416988084021897, 58],
-  ];
+  // console.log("Valor: " + valor);
   const addMoreMarkers = () => {
     map &&
       locations.map((location) => {
-        if (location[2] <= 55) {
+        const valor =
+          tipo === "ld"
+            ? location[2]
+            : tipo === "le"
+            ? location[3]
+            : tipo === "ln"
+            ? location[4]
+            : location[5];
+        console.log(valor);
+        if (valor <= 55) {
           return marker([location[0], location[1]])
             .setIcon(colorMarker(color[0]))
             .addTo(map)
-            .bindPopup(`Valor de ruido: ${location[2]}`);
+            .bindPopup(`Valor de ruido: ${valor}  <br/ > ${location[6]}`);
         }
-        if (location[2] > 55 && location[2] <= 60) {
+        if (valor > 55 && valor <= 60) {
           return marker([location[0], location[1]])
             .setIcon(colorMarker(color[1]))
             .addTo(map)
-            .bindPopup(`Valor de ruido: ${location[2]}`);
+            .bindPopup(`Valor de ruido: ${valor}  <br/ > ${location[6]}`);
         }
-        if (location[2] > 60 && location[2] <= 65) {
+        if (valor > 60 && valor <= 65) {
           return marker([location[0], location[1]])
             .setIcon(colorMarker(color[2]))
             .addTo(map)
-            .bindPopup(`Valor de ruido: ${location[2]}`);
+            .bindPopup(`Valor de ruido: ${valor}  <br/ > ${location[6]}`);
         }
-        if (location[2] > 65 && location[2] <= 70) {
+        if (valor > 65 && valor <= 70) {
           return marker([location[0], location[1]])
             .setIcon(colorMarker(color[3]))
             .addTo(map)
-            .bindPopup(`Valor de ruido: ${location[2]}`);
+            .bindPopup(`Valor de ruido: ${valor}  <br/ > ${location[6]}`);
         }
-        if (location[2] > 70) {
+        if (valor > 70) {
           return marker([location[0], location[1]])
             .setIcon(colorMarker(color[4]))
             .addTo(map)
-            .bindPopup(`Valor de ruido: ${location[2]}`);
+            .bindPopup(`Valor de ruido: ${valor}  <br/ > ${location[6]}`);
         }
       });
   };
@@ -98,7 +102,7 @@ const MapRuido = ({ id }: Props) => {
       setMap(
         new Map(id, {
           center: [lati / locations.length, longi / locations.length],
-          zoom: 13,
+          zoom: 14,
         }).setView([lati / locations.length, longi / locations.length])
       );
     }
