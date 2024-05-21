@@ -1,210 +1,152 @@
-import React, { useState } from "react";
-
+import React, { useEffect, useState } from "react";
+//@ts-ignore
+import BarChart from "../../components/Chart/BarChart.js";
 import "./calculoDeEmisiones.css";
 
-const CalculoDeEmisiones = () => {
-  const valores = [
-    {
-      "turismo-gasolina": 138,
-      "turismo-diesel": 120,
-      "turismo-gpl": 95,
-      "ligero-gasolina": 195,
-      "ligero-diesel": 162,
-      "ligero-gpl": 135,
-      "pesado-gasolina": 450,
-      "pesado-diesel": 410,
-      "pesado-gpl": 360,
-      "autobus-gasolina": 450,
-      "autobus-diesel": 410,
-      "autobus-gpl": 360,
-      "ciclomotor-gasolina": 450,
-      "ciclomotor-diesel": 410,
-      "taxi-gasolina": 195,
-      "taxi-diesel": 162,
-      "taxi-gpl": 135,
-    },
-  ];
+type Props = {
+  funcion: (int: number) => void;
+};
 
-  const numVehTur = [
-    {
-      gasolina: 1234,
-      diesel: 2345,
-      gpl: 120,
-    },
-  ];
-  const numVehLig = [
-    {
-      gasolina: 2500,
-      diesel: 1251,
-      gpl: 100,
-    },
-  ];
-  const numVehPes = [
-    {
-      gasolina: 5000,
-      diesel: 2365,
-      gpl: 36,
-    },
-  ];
-  const numVehBus = [
-    {
-      gasolina: 541,
-      diesel: 547,
-      gpl: 12,
-    },
-  ];
-  const numVehCiclo = [
-    {
-      gasolina: 1234,
-      diesel: 2345,
-      gpl: 120,
-    },
-  ];
-  const numVehTaxi = [
-    {
-      gasolina: 1234,
-      diesel: 2345,
-      gpl: 120,
-    },
-  ];
-  const [kmsTurismos, setkmsTurismos] = useState(
-    numVehTur[0].gasolina * valores[0]["turismo-gasolina"] +
-      numVehTur[0].diesel * valores[0]["turismo-diesel"] +
-      numVehTur[0].gpl * valores[0]["turismo-gpl"]
-  );
-  const [kmsLigeros, setkmsLigeros] = useState(
-    numVehLig[0].gasolina * valores[0]["ligero-gasolina"] +
-      numVehLig[0].diesel * valores[0]["ligero-diesel"] +
-      numVehLig[0].gpl * valores[0]["ligero-gpl"]
-  );
-  const [kmsPesados, setkmsPesados] = useState(
-    numVehPes[0].gasolina * valores[0]["pesado-gasolina"] +
-      numVehPes[0].diesel * valores[0]["pesado-diesel"] +
-      numVehPes[0].gpl * valores[0]["pesado-gpl"]
-  );
-  const [kmsAutobuses, setkmsAutobuses] = useState(
-    numVehBus[0].gasolina * valores[0]["autobus-gasolina"] +
-      numVehBus[0].diesel * valores[0]["autobus-diesel"] +
-      numVehBus[0].gpl * valores[0]["autobus-gpl"]
-  );
-  const [kmsCiclomotores, setkmsCiclomotores] = useState(
-    numVehCiclo[0].gasolina * valores[0]["ciclomotor-gasolina"] +
-      numVehCiclo[0].diesel * valores[0]["ciclomotor-diesel"]
-  );
-  const [kmsTaxis, setkmsTaxis] = useState(
-    numVehTaxi[0].gasolina * valores[0]["taxi-gasolina"] +
-      numVehTaxi[0].diesel * valores[0]["taxi-diesel"] +
-      numVehTaxi[0].gpl * valores[0]["taxi-gpl"]
-  );
-  const [teqaño, setTeqaño] = useState<Number>(
-    kmsTurismos +
-      kmsLigeros +
-      kmsPesados +
-      kmsAutobuses +
-      kmsCiclomotores +
-      kmsTaxis
-  );
-  // setkmsTurismos(numVehTur[0].gasolina * valores[0]["turismo-gasolina"]);
+const CalculoDeEmisiones = ({ funcion }: Props) => {
+  const [vehCero, setVehCero] = useState<number>(0);
+  const [vehEco, setVehEco] = useState<number>(0);
+  const [vehC, setVehC] = useState<number>(0);
+  const [vehB, setVehB] = useState<number>(0);
+  const [vehNoDistintivo, setVehNoDistintivo] = useState<number>(0);
+
+  const total =
+    Math.round(vehNoDistintivo * 1.14) +
+    Math.round(vehB * 1.02) +
+    Math.round(vehC * 0.9) +
+    Math.round(vehEco * 0.72) +
+    Math.round(vehCero * 0.6);
+
+  const data = {
+    labels: [
+      "Etiqueta Cero",
+      "Etiqueta Eco",
+      "Etiqueta C",
+      "Etiqueta B",
+      "Sin distintivo",
+    ],
+    datasets: [
+      {
+        label: "Número vehículos",
+        data: [vehCero, vehEco, vehC, vehB, vehNoDistintivo],
+        backgroundColor: "#bdd7ee",
+      },
+      {
+        label: "Kg/CO2/Hora",
+        data: [
+          Math.round(vehCero * 0.6),
+          Math.round(vehEco * 0.72),
+          Math.round(vehC * 0.9),
+          Math.round(vehB * 1.02),
+          Math.round(vehNoDistintivo * 1.14),
+        ],
+        backgroundColor: "#454E7C",
+      },
+    ],
+  };
+  useEffect(() => {
+    funcion(total);
+  }, [total]);
 
   return (
     <div className="calculo">
       <div className="calculo__valores">
-        <h4>
-          VALORES INDICATIVOS DE LAS EMISIONES DE LOS VEHÍCULOS EN CO2 g/km
-        </h4>
+        <h4>VALORES DE LAS EMISIONES DE LOS VEHÍCULOS EN CO2 Kg/CO2/Hora</h4>
 
         <table>
           <thead>
             <tr>
-              <th id="th">TIPOLOGIA DE VEHICULO</th>
-              <th id="th">GASOLINA</th>
-              <th id="th">DIESEL</th>
-              <th id="th">LPG GPL</th>
+              <th id="th">Tipo de etiqueta</th>
+              <th id="th" className="vehiculos">
+                Nº de vehículos
+              </th>
+              <th id="th">Kg/CO2/Hora</th>
             </tr>
           </thead>
           <tbody>
             <tr>
-              <td id="tdTitulo">TURISMO</td>
-              <td id="td">138</td>
-              <td id="td">120</td>
-              <td id="td">95</td>
+              <td id="tdTitulo">Etiqueta Cero</td>
+              <td id="td">
+                <input
+                  type="number"
+                  onChange={(e) => {
+                    const newVehCero = e.target.valueAsNumber;
+                    setVehCero(newVehCero);
+                  }}
+                ></input>
+              </td>
+              <td id="td">{Math.round(vehCero * 0.6)}</td>
             </tr>
             <tr>
-              <td id="tdTitulo">VEHICULO LIGERO N1</td>
-              <td id="td">195</td>
-              <td id="td">162</td>
-              <td id="td">135</td>
+              <td id="tdTitulo">Etiqueta Eco</td>
+              <td id="td">
+                <input
+                  type="number"
+                  onChange={(e) => {
+                    const newVehEco = e.target.valueAsNumber;
+                    setVehEco(newVehEco);
+                  }}
+                ></input>
+              </td>
+              <td id="td">{Math.round(vehEco * 0.72)}</td>
             </tr>
             <tr>
-              <td id="tdTitulo">VEHICULO PESADO N2 Y N3</td>
-              <td id="td">450</td>
-              <td id="td">410</td>
-              <td id="td">360</td>
+              <td id="tdTitulo">Etiqueta C</td>
+              <td id="td">
+                <input
+                  type="number"
+                  onChange={(e) => {
+                    const newVehC = e.target.valueAsNumber;
+                    setVehC(newVehC);
+                  }}
+                ></input>
+              </td>
+              <td id="td">{Math.round(vehC * 0.9)}</td>
             </tr>
             <tr>
-              <td id="tdTitulo">AUTOBÚS</td>
-              <td id="td">450</td>
-              <td id="td">410</td>
-              <td id="td">360</td>
+              <td id="tdTitulo">Etiqueta B</td>
+              <td id="td">
+                <input
+                  type="number"
+                  onChange={(e) => {
+                    const newVehB = e.target.valueAsNumber;
+                    setVehB(newVehB);
+                  }}
+                ></input>
+              </td>
+              <td id="td">{Math.round(vehB * 1.02)}</td>
             </tr>
             <tr>
-              <td id="tdTitulo">CICLOMOTOR</td>
-              <td id="td">95</td>
-              <td id="td">90</td>
-              <td id="td">---</td>
-            </tr>
-            <tr>
-              <td id="tdTitulo">TAXI</td>
-              <td id="td">195</td>
-              <td id="td">162</td>
-              <td id="td">135</td>
+              <td id="tdTitulo">Sin distintivo</td>
+              <td id="td">
+                <input
+                  type="number"
+                  onChange={(e) => {
+                    const newVehNoDistintivo = e.target.valueAsNumber;
+                    setVehNoDistintivo(newVehNoDistintivo);
+                  }}
+                ></input>
+              </td>
+              <td id="td">{Math.round(vehNoDistintivo * 1.14)}</td>
             </tr>
           </tbody>
         </table>
       </div>
       <div className="calculo__calculadora">
-        <div id="totalTeq">{teqaño.toString()} Teq/año</div>
-        <table id="teqTable">
-          <thead>
-            <tr>
-              <th>KMS TURISMOS</th>
-              <td>
-                <label>{kmsTurismos}</label>
-              </td>
-            </tr>
-            <tr>
-              <th>KMS VEHÍCULOS LIGEROS N1</th>
-              <td>
-                <label>{kmsLigeros}</label>
-              </td>
-            </tr>
-            <tr>
-              <th>KMS VEHÍCULOS PESADOS N2 Y N3</th>
-              <td>
-                <label>{kmsPesados}</label>
-              </td>
-            </tr>
-            <tr>
-              <th>KMS AUTOBUSES</th>
-              <td>
-                <label>{kmsAutobuses}</label>
-              </td>
-            </tr>
-            <tr>
-              <th>KMS CICLOMOTORES</th>
-              <td>
-                <label>{kmsCiclomotores} </label>
-              </td>
-            </tr>
-            <tr>
-              <th>KMS TAXIS</th>
-              <td>
-                <label>{kmsTaxis} </label>
-              </td>
-            </tr>
-          </thead>
-          <tbody></tbody>
-        </table>
+        <div id="totalTeq">
+          {total}
+          Kg/CO2/Hora
+        </div>
+        <BarChart datos={data}></BarChart>
+        <p className="info">
+          Esta información puede sufrir variaciones tras su validación
+          definitiva.
+        </p>
+        {/* <Bar options={options} data={data}></Bar> */}
       </div>
     </div>
   );
