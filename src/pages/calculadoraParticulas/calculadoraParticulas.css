@@ -20,6 +20,7 @@
       background-color: #f7f7f7;
       border: 0.5px solid #53a5dc;
       color: #53a5dc;
+      cursor: pointer;
     }
   }
   .cantidad {
@@ -53,6 +54,7 @@
       height: 2.5em;
       padding: 0.5em;
       margin: 2em;
+      cursor: pointer;
     }
   }
 }
@@ -82,8 +84,52 @@
     th {
       text-align: center;
     }
+    margin-right: 2em;
     .val {
       text-align: center;
     }
   }
+}
+.formulario .archivo {
+  /* display: flex;
+  align-content: center;
+  justify-content: center;
+  margin-top: 3em; */
+  width: 30%;
+  height: 45px;
+  margin: auto;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  color: #6092c5;
+  border: 1px solid #6092c5;
+  border-radius: 10px;
+  margin-bottom: 1em;
+  label {
+    font-size: 13px;
+  }
+}
+input[type="file"] {
+  background-color: transparent;
+  width: 20vh;
+}
+.archivo input[type="file"] {
+  padding: 5px 0 0 15px;
+  font-size: 13px;
+  &::-webkit-file-upload-button {
+    display: none;
+  }
+  &::file-selector-button {
+    display: none;
+  }
+}
+.archivo:hover {
+  background-color: #e7e7e7;
+  border-radius: 10px;
+  border: 1px solid #495b86;
+  cursor: pointer;
+}
+.archivo :hover {
+  cursor: pointer;
 }
