@@ -39,7 +39,7 @@ const EficienciaEnergetica = () => {
           frameBorder={0}
           src="http://localhost:8088/superset/explore/p/DKep0Oglqgv/?standalone=3&height=350"
         ></iframe>
-        <p>Energía consumida (kWh/año)</p>
+        <p>Energía consumida (MWh/año)</p>
       </div>
     </div>
   );

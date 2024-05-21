@@ -1,5 +1,5 @@
 import { Tab, Tabs } from "@mui/material";
-import React from "react";
+import React, { useState } from "react";
 //@ts-ignore
 import pdfFile from "./resources/Emisiones contaminantes ZBE.pdf";
 import PrincipalesContaminantes from "./pages/principalesContaminates/PrincipalesContaminantes.tsx";
@@ -10,12 +10,20 @@ import EficienciaEnergetica from "./pages/eficienciaEnergetica/eficienciaEnerget
 import MonitorizacionRuido from "./pages/monitorizacionRuido/monitorizacionRuido.tsx";
 import ImpactoContaminacion from "./pages/impactoContaminacion/impactoContaminacion.tsx";
 import { CalculadoraParticulas } from "./pages/calculadoraParticulas/calculadoraParticulas.tsx";
+// import * as dotenv from "dotenv";
+// import { GeneratedAlways, Kysely } from "kysely";
+// import { NeonDialect } from "kysely-neon";
+// import ws from "ws";
 
+// dotenv.config({ path: "../dotenv.env" });
 import "./App.css";
 
 function App() {
   const [value, setValue] = React.useState("contaminantes");
-
+  const [particulas, setParticulas] = useState<number>(0);
+  const cogerDatosParticulas = (datos: number) => {
+    setParticulas(datos);
+  };
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
     setValue(newValue);
   };
@@ -65,13 +73,15 @@ function App() {
           ></Tab>
         </Tabs>
         {value === "contaminantes" && <PrincipalesContaminantes />}
-        {value === "calculo" && <CalculoDeEmisiones />}
+        {value === "calculo" && (
+          <CalculoDeEmisiones funcion={cogerDatosParticulas} />
+        )}
         {value === "superficie" && <SuperficieContaminada />}
         {value === "naturaleza" && <NaturalezaContaminacion />}
         {value === "imapcto" && <ImpactoContaminacion />}
         {value === "eficiencia" && <EficienciaEnergetica />}
         {value === "monitorizacion" && <MonitorizacionRuido />}
-        {value === "Admin" && <CalculadoraParticulas />}
+        {value === "Admin" && <CalculadoraParticulas particulas={particulas} />}
       </div>
     </div>
   );
