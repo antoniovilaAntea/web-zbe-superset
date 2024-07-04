@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import ReactLoading from "react-loading";
 import * as XLSX from "xlsx";
 
 import "./calculadoraParticulas.css";
@@ -17,8 +16,6 @@ export const CalculadoraParticulas = ({ particulas }: Props) => {
 
   const factor1 = 2.68;
   const factor2 = 2.31;
-
-  const [valZona, setValZona] = useState(1);
 
   const [valLitros, setValLitros] = useState(0);
   const [valTEP, setValTEP] = useState(0);
@@ -259,7 +256,7 @@ export const CalculadoraParticulas = ({ particulas }: Props) => {
       const diferencia = Math.round((fechaGrande - fechaPeque) / 86400000);
 
       setFechaData(diferencia);
-      console.log("Días: " + diferencia);
+      console.log(fechaData);
       setArchivo(false);
     } catch (error) {
       console.error("Error reading file:", error);

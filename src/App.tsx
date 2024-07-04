@@ -10,12 +10,7 @@ import EficienciaEnergetica from "./pages/eficienciaEnergetica/eficienciaEnerget
 import MonitorizacionRuido from "./pages/monitorizacionRuido/monitorizacionRuido.tsx";
 import ImpactoContaminacion from "./pages/impactoContaminacion/impactoContaminacion.tsx";
 import { CalculadoraParticulas } from "./pages/calculadoraParticulas/calculadoraParticulas.tsx";
-// import * as dotenv from "dotenv";
-// import { GeneratedAlways, Kysely } from "kysely";
-// import { NeonDialect } from "kysely-neon";
-// import ws from "ws";
 
-// dotenv.config({ path: "../dotenv.env" });
 import "./App.css";
 
 function App() {
@@ -61,7 +56,7 @@ function App() {
             wrapped
           ></Tab>
           <Tab
-            value="imapcto"
+            value="impacto"
             label="Impacto de la contaminación"
             wrapped
           ></Tab>
@@ -78,7 +73,7 @@ function App() {
         )}
         {value === "superficie" && <SuperficieContaminada />}
         {value === "naturaleza" && <NaturalezaContaminacion />}
-        {value === "imapcto" && <ImpactoContaminacion />}
+        {value === "impacto" && <ImpactoContaminacion />}
         {value === "eficiencia" && <EficienciaEnergetica />}
         {value === "monitorizacion" && <MonitorizacionRuido />}
         {value === "Admin" && <CalculadoraParticulas particulas={particulas} />}
