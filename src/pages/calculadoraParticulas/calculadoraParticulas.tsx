@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import ReactLoading from "react-loading";
 import * as XLSX from "xlsx";
 
 import "./calculadoraParticulas.css";
@@ -17,24 +18,205 @@ export const CalculadoraParticulas = ({ particulas }: Props) => {
   const factor1 = 2.68;
   const factor2 = 2.31;
 
+  const [valZona, setValZona] = useState(1);
+
   const [valLitros, setValLitros] = useState(0);
   const [valTEP, setValTEP] = useState(0);
   const [valEnergia, setValEnergia] = useState(0);
+  const [co2, setCo2] = useState(0);
   const [excelData, setExcelData] = useState<any[]>([]);
   const [fechaData, setFechaData] = useState<any>([]);
+  const [archivo, setArchivo] = useState<boolean>(false);
 
   const [contB, setcontB] = useState(0);
   const [contC, setcontC] = useState(0);
   const [contNoFigura, setcontNoFigura] = useState(0);
   const [contEco, setcontEco] = useState(0);
   const [contCero, setcontCero] = useState(0);
-
+  const [coData, setCoData] = useState({
+    id_zona: 1,
+    valor_actual: valco,
+    valor_limite: 10,
+    fecha: new Date(),
+  });
   const handleFileInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
+      setArchivo(true);
       exportToExcel(Array.from(e.target.files));
     }
   };
+  const handleUploadDataBase = async () => {
+    console.log("CO2:", totalCo2Data);
+    console.log("Energia:", energiaData);
+    console.log("TEP:", consumoData);
 
+    try {
+      const response = await fetch("http://localhost:3001/api/co", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(coData),
+      });
+
+      if (response.ok) {
+        const result = await response.json();
+        console.log("Data saved successfully:", result);
+      } else {
+        console.error("Failed to save data:", response.statusText);
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
+
+    try {
+      const response = await fetch("http://localhost:3001/api/no2", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(no2Data),
+      });
+
+      if (response.ok) {
+        const result = await response.json();
+        console.log("Data saved successfully:", result);
+      } else {
+        console.error("Failed to save data:", response.statusText);
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
+
+    try {
+      const response = await fetch("http://localhost:3001/api/hc", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(hcData),
+      });
+
+      if (response.ok) {
+        const result = await response.json();
+        console.log("Data saved successfully:", result);
+      } else {
+        console.error("Failed to save data:", response.statusText);
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
+
+    try {
+      const response = await fetch("http://localhost:3001/api/pm25", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(pm25Data),
+      });
+
+      if (response.ok) {
+        const result = await response.json();
+        console.log("Data saved successfully:", result);
+      } else {
+        console.error("Failed to save data:", response.statusText);
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
+
+    try {
+      const response = await fetch("http://localhost:3001/api/pm10", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(pm10Data),
+      });
+
+      if (response.ok) {
+        const result = await response.json();
+        console.log("Data saved successfully:", result);
+      } else {
+        console.error("Failed to save data:", response.statusText);
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
+    try {
+      const response = await fetch("http://localhost:3001/api/energia", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(energiaData),
+      });
+
+      if (response.ok) {
+        const result = await response.json();
+        console.log("Data saved successfully:", result);
+      } else {
+        console.error("Failed to save data:", response.statusText);
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
+    try {
+      const response = await fetch("http://localhost:3001/api/combustible", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(combustibleData),
+      });
+
+      if (response.ok) {
+        const result = await response.json();
+        console.log("Data saved successfully:", result);
+      } else {
+        console.error("Failed to save data:", response.statusText);
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
+    try {
+      const response = await fetch("http://localhost:3001/api/consumo", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(consumoData),
+      });
+
+      if (response.ok) {
+        const result = await response.json();
+        console.log("Data saved successfully:", result);
+      } else {
+        console.error("Failed to save data:", response.statusText);
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
+    try {
+      const response = await fetch("http://localhost:3001/api/totalco2", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(totalCo2Data),
+      });
+
+      if (response.ok) {
+        const result = await response.json();
+        console.log("Data saved successfully:", result);
+      } else {
+        console.error("Failed to save data:", response.statusText);
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
   const exportToExcel = async (selectFile: File[]) => {
     if (selectFile.length === 0) {
       alert("Por favor seleccione archivos y/o ingrese celdas.");
@@ -78,6 +260,7 @@ export const CalculadoraParticulas = ({ particulas }: Props) => {
 
       setFechaData(diferencia);
       console.log("Días: " + diferencia);
+      setArchivo(false);
     } catch (error) {
       console.error("Error reading file:", error);
     }
@@ -105,12 +288,6 @@ export const CalculadoraParticulas = ({ particulas }: Props) => {
     setcontCero(Math.round(contadores['["CERO"]'] / 7 / 24 || 0));
   }, [excelData]);
 
-  const [coData, setCoData] = useState({
-    id_zona: 1,
-    valor_actual: valco,
-    valor_limite: 10,
-    fecha: new Date(),
-  });
   const [no2Data, setNo2Data] = useState({
     id_zona: 1,
     valor_actual: valNo2,
@@ -135,6 +312,26 @@ export const CalculadoraParticulas = ({ particulas }: Props) => {
     valor_limite: 5,
     fecha: new Date(),
   });
+  const [combustibleData, setCombustibleData] = useState({
+    id_zona: 1,
+    valor: valLitros,
+    fecha: new Date(),
+  });
+  const [consumoData, setConsumoData] = useState({
+    id_zona: 1,
+    valor: valTEP,
+    fecha: new Date(),
+  });
+  const [energiaData, setEnergiaData] = useState({
+    id_zona: 1,
+    valor: valEnergia,
+    fecha: new Date(),
+  });
+  const [totalCo2Data, setTotalCo2Data] = useState({
+    id_zona: 1,
+    valor: co2,
+    fecha: new Date(),
+  });
 
   const handleChange = (e: any) => {
     const { name, value } = e.target;
@@ -155,6 +352,22 @@ export const CalculadoraParticulas = ({ particulas }: Props) => {
       [name]: name === "fecha" ? new Date(value) : Number(value),
     }));
     setHcData((prevData) => ({
+      ...prevData,
+      [name]: name === "fecha" ? new Date(value) : Number(value),
+    }));
+    setCombustibleData((prevData) => ({
+      ...prevData,
+      [name]: name === "fecha" ? new Date(value) : Number(value),
+    }));
+    setConsumoData((prevData) => ({
+      ...prevData,
+      [name]: name === "fecha" ? new Date(value) : Number(value),
+    }));
+    setEnergiaData((prevData) => ({
+      ...prevData,
+      [name]: name === "fecha" ? new Date(value) : Number(value),
+    }));
+    setTotalCo2Data((prevData) => ({
       ...prevData,
       [name]: name === "fecha" ? new Date(value) : Number(value),
     }));
@@ -241,9 +454,18 @@ export const CalculadoraParticulas = ({ particulas }: Props) => {
           2 /
           factor2;
     setValLitros(Math.round(valorFactor1 + valorFactor2));
-    setValTEP(Math.round(0.84 * valorFactor1 + 0.78 * valorFactor2));
+    setValTEP(Math.round(0.84 * valorFactor1 + 0.74 * valorFactor2));
     setValEnergia(
-      Math.round((0.84 * valorFactor1 + 0.78 * valorFactor2) * 11.63)
+      Math.round((0.84 * valorFactor1 + 0.74 * valorFactor2) * 11.63)
+    );
+    setCo2(
+      Math.round(
+        Math.round(contCero * 0.6) +
+          Math.round(contEco * 0.72) +
+          Math.round(contC * 0.9) +
+          Math.round(contB * 1.02) +
+          Math.round(contNoFigura * 1.14)
+      )
     );
   };
 
@@ -273,7 +495,38 @@ export const CalculadoraParticulas = ({ particulas }: Props) => {
       valor_actual: valhc,
       fecha: new Date(),
     }));
-  }, [valco, valNo2, valpm25, valpm10, valhc]);
+    setCombustibleData((prevData) => ({
+      ...prevData,
+      valor: valLitros,
+      fecha: new Date(),
+    }));
+    setConsumoData((prevData) => ({
+      ...prevData,
+      valor: valTEP,
+      fecha: new Date(),
+    }));
+    setEnergiaData((prevData) => ({
+      ...prevData,
+      valor: valEnergia,
+      fecha: new Date(),
+    }));
+    setTotalCo2Data((prevData) => ({
+      ...prevData,
+      valor: co2,
+      fecha: new Date(),
+    }));
+    console.log("CO2: " + co2);
+  }, [
+    valco,
+    valNo2,
+    valpm25,
+    valpm10,
+    valhc,
+    valLitros,
+    valEnergia,
+    valTEP,
+    co2,
+  ]);
 
   return (
     <div style={{ color: "#53a5dc", width: "60%" }}>
@@ -281,7 +534,7 @@ export const CalculadoraParticulas = ({ particulas }: Props) => {
       <form className="formulario" onSubmit={(e) => e.preventDefault()}>
         <div className="tipo">
           <label htmlFor="id_zona">Zona:</label>
-          <select id="id_zona" name="id_zona" value={0} onChange={handleChange}>
+          <select id="id_zona" name="id_zona" onChange={handleChange}>
             <option value="1">Zona 1</option>
             <option value="2">Zona 2</option>
             <option value="3">Zona 3</option>
@@ -358,26 +611,32 @@ export const CalculadoraParticulas = ({ particulas }: Props) => {
                 <td>Energía (MWh)</td>
                 <td className="val">{valEnergia}</td>
               </tr>
+              <tr>
+                <td>Kg/Co2/h</td>
+                <td className="val">{co2}</td>
+              </tr>
             </tbody>
           </table>
         </div>
         <div className="botones">
           <button type="button" onClick={handleCalculate}>
-            Calcular emisiones
+            {archivo && "Leyendo archivo"}
+            {!archivo && "Calcular emisiones"}
           </button>
           <button
             type="button"
             onClick={() => {
-              console.log(coData);
-              console.log(no2Data);
-              console.log(pm25Data);
-              console.log(pm10Data);
-              console.log(hcData);
-              console.log("Sin distintivo: " + contNoFigura);
-              console.log("Eco: " + contEco);
-              console.log("Cero: " + contCero);
-              console.log("C: " + contC);
-              console.log("B: " + contB);
+              // console.log(coData);
+              // console.log(no2Data);
+              // console.log(pm25Data);
+              // console.log(pm10Data);
+              // console.log(hcData);
+              // console.log("Sin distintivo: " + contNoFigura);
+              // console.log("Eco: " + contEco);
+              // console.log("Cero: " + contCero);
+              // console.log("C: " + contC);
+              // console.log("B: " + contB);
+              handleUploadDataBase();
             }}
           >
             Subir a base de datos
