@@ -10,25 +10,25 @@ const EficienciaEnergetica = () => {
           height="350px"
           width="700px"
           frameBorder={0}
-          src="http://localhost:8088/superset/explore/p/9RLpa3v47Bd/?standalone=3&height=350"
+          src="http://localhost:8088/superset/explore/p/GOXpR0Rq4Wd/?standalone=3&height=350"
         ></iframe>
-        <p>Emisiones (Tn CO²/año)</p>
+        <p>Emisiones (Tn CO²/hora)</p>
       </div>
       <div className="consumo">
         <iframe
           height="350px"
           width="700px"
           frameBorder={0}
-          src="http://localhost:8088/superset/explore/p/jwW4V5ENag0/?standalone=3&height=350"
+          src="http://localhost:8088/superset/explore/p/E7aN88PbN9y/?standalone=3&height=350"
         ></iframe>
-        <p>Consumo (TEP/año)</p>
+        <p>Consumo (TEP/hora)</p>
       </div>
       <div className="combustible">
         <iframe
           height="350px"
           width="700px"
           frameBorder={0}
-          src="http://localhost:8088/superset/explore/p/2D64e184VKB/?standalone=3&height=350"
+          src="http://localhost:8088/superset/explore/p/zXVloWjvlZd/?standalone=3&height=350"
         ></iframe>
         <p>Combustible (litros)</p>
       </div>
@@ -37,9 +37,9 @@ const EficienciaEnergetica = () => {
           height="350px"
           width="700px"
           frameBorder={0}
-          src="http://localhost:8088/superset/explore/p/DKep0Oglqgv/?standalone=3&height=350"
+          src="http://localhost:8088/superset/explore/p/LgeN2mo7pxk/?standalone=3&height=350"
         ></iframe>
-        <p>Energía consumida (MWh/año)</p>
+        <p>Energía consumida (MWh/hora)</p>
       </div>
     </div>
   );
