@@ -12,6 +12,7 @@ import ImpactoContaminacion from "./pages/impactoContaminacion/impactoContaminac
 import { CalculadoraParticulas } from "./pages/calculadoraParticulas/calculadoraParticulas.tsx";
 
 import "./App.css";
+import Camaraszbe from "./pages/camaras/camaraszbe.tsx";
 
 function App() {
   const [value, setValue] = React.useState("contaminantes");
@@ -66,6 +67,7 @@ function App() {
             label="Monitorización del ruido"
             wrapped
           ></Tab>
+          <Tab value="camaras" label="Mapa de las cámaras" wrapped></Tab>
         </Tabs>
         {value === "contaminantes" && <PrincipalesContaminantes />}
         {value === "calculo" && (
@@ -76,6 +78,7 @@ function App() {
         {value === "impacto" && <ImpactoContaminacion />}
         {value === "eficiencia" && <EficienciaEnergetica />}
         {value === "monitorizacion" && <MonitorizacionRuido />}
+        {value === "camaras" && <Camaraszbe />}
         {value === "Admin" && <CalculadoraParticulas particulas={particulas} />}
       </div>
     </div>
