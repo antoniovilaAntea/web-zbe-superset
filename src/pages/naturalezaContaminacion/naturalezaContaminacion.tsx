@@ -22,6 +22,7 @@ const NaturalezaContaminacion = () => {
             <div className="naturaleza__graphs__first__one">
               <p>Actividad industrial</p>
               <iframe
+                title="industria"
                 width="600"
                 height="400"
                 seamless
@@ -33,6 +34,7 @@ const NaturalezaContaminacion = () => {
             <div className="naturaleza__graphs__first__two">
               <p>Trafico rodado</p>
               <iframe
+                title="trafico"
                 width="600"
                 height="400"
                 seamless
@@ -45,6 +47,7 @@ const NaturalezaContaminacion = () => {
           <div className="naturaleza__graphs__second">
             <p>Actividad portuaria</p>
             <iframe
+              title="puertos"
               width="600"
               height="400"
               seamless
