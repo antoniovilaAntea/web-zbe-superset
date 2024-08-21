@@ -50,7 +50,7 @@ const CalculoDeEmisiones = ({ funcion }: Props) => {
   };
   useEffect(() => {
     funcion(total);
-  }, [total]);
+  }, [funcion, total]);
 
   return (
     <div className="calculo">
