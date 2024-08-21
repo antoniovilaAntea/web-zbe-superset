@@ -116,7 +116,10 @@ const MonitorizacionRuido = () => {
         <MapRuido id="map3" tipo="ln" locations={locations}></MapRuido>
         <MapRuido id="map4" tipo="all" locations={locations}></MapRuido>
         <div>
-          <img src="https://i.ibb.co/ygCg6PC/ruido.png"></img>
+          <img
+            src="https://i.ibb.co/ygCg6PC/ruido.png"
+            alt="Leyenda de colores y valores comprendidos: Verde entre 50 y 55db, amarillo entre 55 y 60db, naranja claro entre 60 y 65db, naranja oscuro entre 65 y 70 db y rojo mas de 70db"
+          ></img>
         </div>
       </div>
       <div className="monitorizacion__texto">
