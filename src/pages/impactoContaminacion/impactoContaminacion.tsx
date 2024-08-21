@@ -4,6 +4,7 @@ const ImpactoContaminacion = () => {
   return (
     <div className="impactoContaminacion">
       <iframe
+        title="Contaminacion"
         width="1200"
         height="900"
         seamless
