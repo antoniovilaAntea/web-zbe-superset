@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import * as XLSX from "xlsx";
+import { Camera } from "../../types/camera";
+import { PickerDay } from "../../components/DayPicker";
 
 import "./calculadoraParticulas.css";
 
@@ -36,6 +38,8 @@ export const CalculadoraParticulas = ({ particulas }: Props) => {
     valor_limite: 10,
     fecha: new Date(),
   });
+  const [selectedZone, setSelectedZone] = useState<number | null>(null);
+
   const handleFileInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
       setArchivo(true);
@@ -43,10 +47,6 @@ export const CalculadoraParticulas = ({ particulas }: Props) => {
     }
   };
   const handleUploadDataBase = async () => {
-    console.log("CO2:", totalCo2Data);
-    console.log("Energia:", energiaData);
-    console.log("TEP:", consumoData);
-
     try {
       const response = await fetch("http://localhost:3001/api/co", {
         method: "POST",
@@ -368,6 +368,24 @@ export const CalculadoraParticulas = ({ particulas }: Props) => {
       ...prevData,
       [name]: name === "fecha" ? new Date(value) : Number(value),
     }));
+
+    const selectedCameraId = parseInt(e.target.value, 10);
+
+    // Buscar la cámara seleccionada y obtener su id_zona
+    let zone = null;
+    if (groupedCameras) {
+      for (const cameras of Object.values(groupedCameras)) {
+        const selectedCamera = cameras.find(
+          (cam) => cam.id === selectedCameraId
+        );
+        if (selectedCamera) {
+          zone = selectedCamera.id_zona;
+          break;
+        }
+      }
+    }
+
+    setSelectedZone(zone);
   };
 
   const handleCalculate = () => {
@@ -524,19 +542,64 @@ export const CalculadoraParticulas = ({ particulas }: Props) => {
     valTEP,
     co2,
   ]);
+  const [cameraList, setCameraList] = useState<Camera[]>();
+
+  const handleCallCameras = async () => {
+    try {
+      const response = await fetch("http://localhost:3001/api/camaras", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        setCameraList(data);
+      } else {
+        console.error("Error en la solicitud:", response.status);
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
+
+  useEffect(() => {
+    handleCallCameras();
+  }, []);
+  const groupedCameras =
+    cameraList !== undefined &&
+    cameraList?.reduce<Record<number, Camera[]>>((acc, cam) => {
+      if (!acc[cam.id_zona]) {
+        acc[cam.id_zona] = [];
+      }
+      acc[cam.id_zona].push(cam);
+      return acc;
+    }, {});
 
   return (
     <div style={{ color: "#53a5dc", width: "60%" }}>
       Subir datos de contaminantes
       <form className="formulario" onSubmit={(e) => e.preventDefault()}>
+        <PickerDay></PickerDay>
         <div className="tipo">
-          <label htmlFor="id_zona">Zona:</label>
           <select id="id_zona" name="id_zona" onChange={handleChange}>
-            <option value="1">Zona 1</option>
-            <option value="2">Zona 2</option>
-            <option value="3">Zona 3</option>
+            {Object.entries(groupedCameras).map(([id_zona, cameras]) => (
+              <optgroup key={id_zona} label={`Zona ${id_zona}`}>
+                {cameras.map((cam: Camera) => (
+                  <option key={cam.id} value={cam.id}>
+                    {cam.calle}
+                  </option>
+                ))}
+              </optgroup>
+            ))}
           </select>
         </div>
+        {selectedZone && (
+          <div className="seleccionCamara">
+            La cámara seleccionada está en la Zona {selectedZone}
+          </div>
+        )}
         <div className="archivo">
           <input
             type="file"
@@ -552,36 +615,42 @@ export const CalculadoraParticulas = ({ particulas }: Props) => {
             <thead>
               <tr>
                 <th>Contaminante</th>
+                <th>Contaminación cámara</th>
                 <th>Contaminación Total</th>
               </tr>
             </thead>
             <tbody>
               <tr>
                 <td>NO2 (µg/m3/hora)</td>
+                <td></td>
                 <td className="val">
                   {valNo2 === undefined ? "CARGANDO" : valNo2}
                 </td>
               </tr>
               <tr>
                 <td>PM25 (µg/m3/hora)</td>
+                <td></td>
                 <td className="val">
                   {valpm25 === undefined ? "CARGANDO" : valpm25}
                 </td>
               </tr>
               <tr>
                 <td>PM10 (µg/m3/hora)</td>
+                <td></td>
                 <td className="val">
                   {valpm10 === undefined ? "CARGANDO" : valpm10}
                 </td>
               </tr>
               <tr>
                 <td>CO (mg/m3/hora)</td>
+                <td></td>
                 <td className="val">
                   {valco === undefined ? "CARGANDO" : valco}
                 </td>
               </tr>
               <tr>
                 <td>HC (µg/m3/hora)</td>
+                <td></td>
                 <td className="val">
                   {valhc === undefined ? "CARGANDO" : valhc}
                 </td>
@@ -592,24 +661,29 @@ export const CalculadoraParticulas = ({ particulas }: Props) => {
             <thead>
               <tr>
                 <th>Consumo</th>
+                <th>Consumo cámara</th>
                 <th>Consumo Total</th>
               </tr>
             </thead>
             <tbody>
               <tr>
                 <td>Litros combustible</td>
+                <td></td>
                 <td className="val">{valLitros}</td>
               </tr>
               <tr>
                 <td>TEP</td>
+                <td></td>
                 <td className="val">{valTEP}</td>
               </tr>
               <tr>
                 <td>Energía (MWh)</td>
+                <td></td>
                 <td className="val">{valEnergia}</td>
               </tr>
               <tr>
                 <td>Kg/Co2/h</td>
+                <td></td>
                 <td className="val">{co2}</td>
               </tr>
             </tbody>
@@ -623,16 +697,6 @@ export const CalculadoraParticulas = ({ particulas }: Props) => {
           <button
             type="button"
             onClick={() => {
-              // console.log(coData);
-              // console.log(no2Data);
-              // console.log(pm25Data);
-              // console.log(pm10Data);
-              // console.log(hcData);
-              // console.log("Sin distintivo: " + contNoFigura);
-              // console.log("Eco: " + contEco);
-              // console.log("Cero: " + contCero);
-              // console.log("C: " + contC);
-              // console.log("B: " + contB);
               handleUploadDataBase();
             }}
           >
