@@ -55,7 +55,6 @@ const MapRuido = ({ id, tipo, locations }: Props) => {
             : tipo === "ln"
             ? location[4]
             : location[5];
-        console.log(valor);
         if (valor <= 55) {
           return marker([location[0], location[1]])
             .setIcon(colorMarker(color[0]))
