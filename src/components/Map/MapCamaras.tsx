@@ -2,85 +2,104 @@ import React from "react";
 import "leaflet/dist/leaflet.css";
 import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
 import { DivIcon, LatLngExpression } from "leaflet";
+import { Camera } from "../../types/camera";
 
 type Props = {
-  datos: {
-    id: NumberConstructor;
-    id_zona: NumberConstructor;
-    calle: StringConstructor;
-    coords: { x: NumberConstructor; y: NumberConstructor };
-  }[];
+  datos: Camera[] | undefined;
+  contaminacionData:
+    | (
+        | { calle: string; contaminante: string; valor: string; fecha: string }
+        | undefined
+      )[]
+    | undefined; // Nueva propiedad
 };
 
 const MapCamaras = (props: Props) => {
-  const array = props.datos.map((camaras) => [
+  const { datos, contaminacionData } = props;
+
+  // Crear un mapa que relacione las calles con datos de contaminación
+  const contaminacionMap = new Map<string, boolean>();
+  contaminacionData?.forEach((item) => {
+    item !== undefined && contaminacionMap.set(item.calle, true);
+  });
+
+  const array = datos?.map((camaras) => [
     camaras.calle,
     camaras.coords.x,
     camaras.coords.y,
     camaras.id_zona,
   ]);
-  const icono = new DivIcon({
-    html: "<i class='fa fa-video-camera' aria-hidden='true' style='font-size: 24px; color: black;'></i>",
-    className: "custom-div-icon", // Asegúrate de dar un className aquí
-    iconSize: [7, 10],
-    iconAnchor: [7, 10],
-  });
 
-  function calculateCentroid(coords: any) {
-    let x = 0;
-    let y = 0;
-    let z = 0;
-
-    coords.forEach((coord: any) => {
-      let latitude = (parseFloat(coord[0]) * Math.PI) / 180;
-      let longitude = (parseFloat(coord[1]) * Math.PI) / 180;
-
-      x += Math.cos(latitude) * Math.cos(longitude);
-      y += Math.cos(latitude) * Math.sin(longitude);
-      z += Math.sin(latitude);
-    });
-
-    let total = coords.length;
-
-    x = x / total;
-    y = y / total;
-    z = z / total;
-
-    let centralLongitude = Math.atan2(y, x);
-    let centralSquareRoot = Math.sqrt(x * x + y * y);
-    let centralLatitude = Math.atan2(z, centralSquareRoot);
-
-    const centro: LatLngExpression = [
-      (centralLatitude * 180) / Math.PI,
-      (centralLongitude * 180) / Math.PI,
-    ];
-    return centro;
-  }
-
-  const coords = array.map((item) => [item[1], item[2]]);
-  const centroid = calculateCentroid(coords);
-  console.log("CENTRO: " + centroid);
+  // Función para generar color basado en si hay datos de contaminación
+  const getIconColor = (calle: string) => {
+    return contaminacionMap.has(calle) ? "#53a5dc" : "black";
+  };
 
   return (
     <MapContainer
-      center={centroid}
+      center={calculateCentroid(array?.map((item) => [item[1], item[2]]))}
       zoom={14.25}
-      style={{ height: "650px", width: "1050px" }}
+      style={{ height: "550px", width: "950px" }}
     >
       <TileLayer url="https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png"></TileLayer>
-      {array.map((location, index) => (
-        <Marker
-          position={[
-            parseFloat(location[1].toString()),
-            parseFloat(location[2].toString()),
-          ]}
-          icon={icono}
-        >
-          <Popup>{location[0].toString()}</Popup>
-        </Marker>
-      ))}
+      {array?.map((location, index) => {
+        const calle = String(location[0]); // Asegurarse de que sea un string
+        const iconColor = getIconColor(calle); // Pasar el nombre de la calle como string
+
+        const icono = new DivIcon({
+          html: `<i class='fa fa-video-camera' aria-hidden='true' style='font-size: 24px; color: ${iconColor};'></i>`,
+          className: "custom-div-icon",
+          iconSize: [7, 10],
+          iconAnchor: [7, 10],
+        });
+
+        return (
+          <Marker
+            key={index}
+            position={[
+              parseFloat(location[1].toString()),
+              parseFloat(location[2].toString()),
+            ]}
+            icon={icono}
+          >
+            <Popup>{calle}</Popup>
+          </Marker>
+        );
+      })}
     </MapContainer>
   );
 };
+
+// Función para calcular el centroide de las coordenadas
+function calculateCentroid(coords: any) {
+  let x = 0;
+  let y = 0;
+  let z = 0;
+
+  coords.forEach((coord: any) => {
+    let latitude = (parseFloat(coord[0]) * Math.PI) / 180;
+    let longitude = (parseFloat(coord[1]) * Math.PI) / 180;
+
+    x += Math.cos(latitude) * Math.cos(longitude);
+    y += Math.cos(latitude) * Math.sin(longitude);
+    z += Math.sin(latitude);
+  });
+
+  let total = coords.length;
+
+  x = x / total;
+  y = y / total;
+  z = z / total;
+
+  let centralLongitude = Math.atan2(y, x);
+  let centralSquareRoot = Math.sqrt(x * x + y * y);
+  let centralLatitude = Math.atan2(z, centralSquareRoot);
+
+  const centro: LatLngExpression = [
+    (centralLatitude * 180) / Math.PI,
+    (centralLongitude * 180) / Math.PI,
+  ];
+  return centro;
+}
 
 export default MapCamaras;
