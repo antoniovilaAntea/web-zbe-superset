@@ -11,13 +11,12 @@ type Props = {
         | { calle: string; contaminante: string; valor: string; fecha: string }
         | undefined
       )[]
-    | undefined; // Nueva propiedad
+    | undefined;
 };
 
 const MapCamaras = (props: Props) => {
   const { datos, contaminacionData } = props;
 
-  // Crear un mapa que relacione las calles con datos de contaminación
   const contaminacionMap = new Map<string, boolean>();
   contaminacionData?.forEach((item) => {
     item !== undefined && contaminacionMap.set(item.calle, true);
@@ -30,7 +29,6 @@ const MapCamaras = (props: Props) => {
     camaras.id_zona,
   ]);
 
-  // Función para generar color basado en si hay datos de contaminación
   const getIconColor = (calle: string) => {
     return contaminacionMap.has(calle) ? "#53a5dc" : "black";
   };
@@ -43,8 +41,8 @@ const MapCamaras = (props: Props) => {
     >
       <TileLayer url="https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png"></TileLayer>
       {array?.map((location, index) => {
-        const calle = String(location[0]); // Asegurarse de que sea un string
-        const iconColor = getIconColor(calle); // Pasar el nombre de la calle como string
+        const calle = String(location[0]);
+        const iconColor = getIconColor(calle);
 
         const icono = new DivIcon({
           html: `<i class='fa fa-video-camera' aria-hidden='true' style='font-size: 24px; color: ${iconColor};'></i>`,
@@ -70,7 +68,6 @@ const MapCamaras = (props: Props) => {
   );
 };
 
-// Función para calcular el centroide de las coordenadas
 function calculateCentroid(coords: any) {
   let x = 0;
   let y = 0;
