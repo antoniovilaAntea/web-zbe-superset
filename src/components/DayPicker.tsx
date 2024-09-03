@@ -1,31 +1,26 @@
 import { useEffect, useId, useRef, useState } from "react";
 import { es } from "date-fns/locale";
-import { format, isValid, parse } from "date-fns";
+import { format, isValid, parse, addDays } from "date-fns";
 import { DayPicker } from "react-day-picker";
 import React from "react";
 import "./DayPicker.css";
 
-export function PickerDay() {
+type Props = {
+  fecha: (data: Date | string) => void;
+};
+
+export function PickerDay({ fecha }: Props) {
   const dialogRef = useRef<HTMLDialogElement>(null);
   const dialogId = useId();
   const headerId = useId();
 
-  // Hold the month in state to control the calendar when the input changes
   const [month, setMonth] = useState(new Date());
-
-  // Hold the selected date in state
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
-
-  // Hold the input value in state
   const [inputValue, setInputValue] = useState("");
-
-  // Hold the dialog visibility in state
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
-  // Function to toggle the dialog visibility
   const toggleDialog = () => setIsDialogOpen(!isDialogOpen);
 
-  // Hook to handle the body scroll behavior and focus trapping.
   useEffect(() => {
     const handleBodyScroll = (isOpen: boolean) => {
       document.body.style.overflow = isOpen ? "hidden" : "";
@@ -43,21 +38,25 @@ export function PickerDay() {
     };
   }, [isDialogOpen]);
 
-  const handleDayPickerSelect = (date: Date) => {
+  const handleDayPickerSelect = (date: Date | undefined) => {
     if (!date) {
       setInputValue("");
       setSelectedDate(undefined);
     } else {
       setSelectedDate(date);
       setInputValue(format(date, "dd/MM/yyyy"));
+      const nextDay = addDays(date, 1);
+
+      const isoDate = nextDay.toISOString().split("T")[0] + "T00:00:00.000Z";
+      fecha(isoDate);
     }
     dialogRef.current?.close();
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setInputValue(e.target.value); // keep the input value in sync
+    setInputValue(e.target.value);
 
-    const parsedDate = parse(e.target.value, "MM/dd/yyyy", new Date());
+    const parsedDate = parse(e.target.value, "dd/MM/yyyy", new Date());
 
     if (isValid(parsedDate)) {
       setSelectedDate(parsedDate);
@@ -75,9 +74,9 @@ export function PickerDay() {
         id="date-input"
         type="text"
         value={inputValue}
-        placeholder={"MM/dd/yyyy"}
+        placeholder={"dd/MM/yyyy"}
         onChange={handleInputChange}
-      />{" "}
+      />
       <button
         style={{
           backgroundColor: "#BDD7EE",

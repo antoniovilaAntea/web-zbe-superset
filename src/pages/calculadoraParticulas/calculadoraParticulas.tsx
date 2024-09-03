@@ -1,7 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import * as XLSX from "xlsx";
 import { Camera } from "../../types/camera";
 import { PickerDay } from "../../components/DayPicker";
+import { ContaminacionTotal } from "../../types/contaminaciontotal";
+import { ContaminacionCamaras } from "../../types/contaminacioncamaras";
+import { addDays } from "date-fns";
 
 import "./calculadoraParticulas.css";
 
@@ -10,11 +13,17 @@ type Props = {
 };
 
 export const CalculadoraParticulas = ({ particulas }: Props) => {
-  const [valNo2, setValNo2] = useState(0);
-  const [valpm25, setValpm25] = useState(0);
-  const [valpm10, setValpm10] = useState(0);
-  const [valco, setValco] = useState(0);
-  const [valhc, setValhc] = useState(0);
+  const [valoresCamara, setValores] = useState({
+    co: 0,
+    no2: 0,
+    pm25: 0,
+    pm10: 0,
+    hc: 0,
+    combustible: 0,
+    tep: 0,
+    energia: 0,
+    co2: 0,
+  });
 
   const factor1 = 2.68;
   const factor2 = 2.31;
@@ -32,13 +41,104 @@ export const CalculadoraParticulas = ({ particulas }: Props) => {
   const [contNoFigura, setcontNoFigura] = useState(0);
   const [contEco, setcontEco] = useState(0);
   const [contCero, setcontCero] = useState(0);
-  const [coData, setCoData] = useState({
-    id_zona: 1,
-    valor_actual: valco,
-    valor_limite: 10,
-    fecha: new Date(),
-  });
-  const [selectedZone, setSelectedZone] = useState<number | null>(null);
+
+  const [cameraList, setCameraList] = useState<Camera[]>();
+
+  const [contaminacionTotal, setContaminacionTotal] =
+    useState<ContaminacionTotal>();
+  const [contaminacionCamaras, setContaminacionCamaras] =
+    useState<ContaminacionCamaras>();
+  const [selectedZone, setSelectedZone] = useState<number>(0);
+  const [selectedCameraId, setSelectedCameraId] = useState<number>(0);
+  const [date, setDate] = useState<Date | string>("");
+  const [cantidadContaminante, setCantidadContaminante] = useState<
+    Array<{ contaminante: string; valor: number; fecha: Date; id_zona: number }>
+  >([]);
+
+  const handleDateChange = (date: Date | string) => {
+    setDate(date);
+    console.log("Date: " + date);
+    totalcontaminacion();
+  };
+
+  const [valUpdate, setValUpdate] = useState<
+    Array<{
+      id_zona: number;
+      contaminante: string;
+      fecha: Date | string;
+      valor: number;
+      id_camara: number;
+    }>
+  >([]);
+
+  useEffect(() => {
+    const newValUpdate = [
+      {
+        id_zona: selectedZone,
+        contaminante: "co",
+        fecha: date,
+        valor: valoresCamara.co,
+        id_camara: selectedCameraId,
+      },
+      {
+        id_zona: selectedZone,
+        contaminante: "no2",
+        fecha: date,
+        valor: valoresCamara.no2,
+        id_camara: selectedCameraId,
+      },
+      {
+        id_zona: selectedZone,
+        contaminante: "pm25",
+        fecha: date,
+        valor: valoresCamara.pm25,
+        id_camara: selectedCameraId,
+      },
+      {
+        id_zona: selectedZone,
+        contaminante: "pm10",
+        fecha: date,
+        valor: valoresCamara.pm10,
+        id_camara: selectedCameraId,
+      },
+      {
+        id_zona: selectedZone,
+        contaminante: "hc",
+        fecha: date,
+        valor: valoresCamara.hc,
+        id_camara: selectedCameraId,
+      },
+      {
+        id_zona: selectedZone,
+        contaminante: "combustible",
+        fecha: date,
+        valor: valoresCamara.combustible,
+        id_camara: selectedCameraId,
+      },
+      {
+        id_zona: selectedZone,
+        contaminante: "tep",
+        fecha: date,
+        valor: valoresCamara.tep,
+        id_camara: selectedCameraId,
+      },
+      {
+        id_zona: selectedZone,
+        contaminante: "energia",
+        fecha: date,
+        valor: valoresCamara.energia,
+        id_camara: selectedCameraId,
+      },
+      {
+        id_zona: selectedZone,
+        contaminante: "co2",
+        fecha: date,
+        valor: valoresCamara.co2,
+        id_camara: selectedCameraId,
+      },
+    ];
+    setValUpdate(newValUpdate);
+  }, [valoresCamara, selectedZone, selectedCameraId, date]);
 
   const handleFileInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
@@ -46,167 +146,51 @@ export const CalculadoraParticulas = ({ particulas }: Props) => {
       exportToExcel(Array.from(e.target.files));
     }
   };
-  const handleUploadDataBase = async () => {
+
+  const totalcontaminacion = useCallback(async () => {
     try {
-      const response = await fetch("http://localhost:3001/api/co", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(coData),
-      });
+      const response = await fetch(
+        "http://localhost:3001/api/contaminacionzona",
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
 
       if (response.ok) {
         const result = await response.json();
-        console.log("Data saved successfully:", result);
+        setContaminacionTotal(result);
       } else {
         console.error("Failed to save data:", response.statusText);
       }
     } catch (error) {
       console.error("Error:", error);
     }
+  }, []);
 
+  const createContaminacionCamara = async (valor: {
+    id_zona: number;
+    contaminante: string;
+    fecha: Date | string;
+    valor: number;
+    id_camara: number;
+  }) => {
     try {
-      const response = await fetch("http://localhost:3001/api/no2", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(no2Data),
-      });
+      const response = await fetch(
+        "http://localhost:3001/api/contaminacioncamaras",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(valor),
+        }
+      );
 
       if (response.ok) {
         const result = await response.json();
-        console.log("Data saved successfully:", result);
-      } else {
-        console.error("Failed to save data:", response.statusText);
-      }
-    } catch (error) {
-      console.error("Error:", error);
-    }
-
-    try {
-      const response = await fetch("http://localhost:3001/api/hc", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(hcData),
-      });
-
-      if (response.ok) {
-        const result = await response.json();
-        console.log("Data saved successfully:", result);
-      } else {
-        console.error("Failed to save data:", response.statusText);
-      }
-    } catch (error) {
-      console.error("Error:", error);
-    }
-
-    try {
-      const response = await fetch("http://localhost:3001/api/pm25", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(pm25Data),
-      });
-
-      if (response.ok) {
-        const result = await response.json();
-        console.log("Data saved successfully:", result);
-      } else {
-        console.error("Failed to save data:", response.statusText);
-      }
-    } catch (error) {
-      console.error("Error:", error);
-    }
-
-    try {
-      const response = await fetch("http://localhost:3001/api/pm10", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(pm10Data),
-      });
-
-      if (response.ok) {
-        const result = await response.json();
-        console.log("Data saved successfully:", result);
-      } else {
-        console.error("Failed to save data:", response.statusText);
-      }
-    } catch (error) {
-      console.error("Error:", error);
-    }
-    try {
-      const response = await fetch("http://localhost:3001/api/energia", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(energiaData),
-      });
-
-      if (response.ok) {
-        const result = await response.json();
-        console.log("Data saved successfully:", result);
-      } else {
-        console.error("Failed to save data:", response.statusText);
-      }
-    } catch (error) {
-      console.error("Error:", error);
-    }
-    try {
-      const response = await fetch("http://localhost:3001/api/combustible", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(combustibleData),
-      });
-
-      if (response.ok) {
-        const result = await response.json();
-        console.log("Data saved successfully:", result);
-      } else {
-        console.error("Failed to save data:", response.statusText);
-      }
-    } catch (error) {
-      console.error("Error:", error);
-    }
-    try {
-      const response = await fetch("http://localhost:3001/api/consumo", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(consumoData),
-      });
-
-      if (response.ok) {
-        const result = await response.json();
-        console.log("Data saved successfully:", result);
-      } else {
-        console.error("Failed to save data:", response.statusText);
-      }
-    } catch (error) {
-      console.error("Error:", error);
-    }
-    try {
-      const response = await fetch("http://localhost:3001/api/totalco2", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(totalCo2Data),
-      });
-
-      if (response.ok) {
-        const result = await response.json();
-        console.log("Data saved successfully:", result);
       } else {
         console.error("Failed to save data:", response.statusText);
       }
@@ -214,6 +198,7 @@ export const CalculadoraParticulas = ({ particulas }: Props) => {
       console.error("Error:", error);
     }
   };
+
   const exportToExcel = async (selectFile: File[]) => {
     if (selectFile.length === 0) {
       alert("Por favor seleccione archivos y/o ingrese celdas.");
@@ -256,7 +241,6 @@ export const CalculadoraParticulas = ({ particulas }: Props) => {
       const diferencia = Math.round((fechaGrande - fechaPeque) / 86400000);
 
       setFechaData(diferencia);
-      console.log(fechaData);
       setArchivo(false);
     } catch (error) {
       console.error("Error reading file:", error);
@@ -273,110 +257,25 @@ export const CalculadoraParticulas = ({ particulas }: Props) => {
         contadores[key] = 1;
       }
     }
-    setcontB(Math.round(contadores['["B"]'] / 7 / 24 || 0));
-    setcontC(Math.round(contadores['["C"]'] / 7 / 24 || 0));
+    console.log("Fecha Data: " + fechaData);
+    setcontB(Math.round(contadores['["B"]'] / fechaData / 24 || 0));
+    setcontC(Math.round(contadores['["C"]'] / fechaData / 24 || 0));
     setcontNoFigura(
       Math.round(
-        (contadores['["NO FIGURA EN BBDD DGT"]'] / 7 / 24 || 0) +
-          (contadores['["SIN DISTINTIVO"]'] / 7 / 24 || 0)
+        (contadores['["NO FIGURA EN BBDD DGT"]'] / fechaData / 24 || 0) +
+          (contadores['["SIN DISTINTIVO"]'] / fechaData / 24 || 0)
       )
     );
-    setcontEco(Math.round(contadores['["ECO"]'] / 7 / 24 || 0));
-    setcontCero(Math.round(contadores['["CERO"]'] / 7 / 24 || 0));
-  }, [excelData]);
-
-  const [no2Data, setNo2Data] = useState({
-    id_zona: 1,
-    valor_actual: valNo2,
-    valor_limite: 200,
-    fecha: new Date(),
-  });
-  const [pm25Data, setPm25Data] = useState({
-    id_zona: 1,
-    valor_actual: valpm25,
-    valor_limite: 25,
-    fecha: new Date(),
-  });
-  const [pm10Data, setPm10Data] = useState({
-    id_zona: 1,
-    valor_actual: valpm10,
-    valor_limite: 50,
-    fecha: new Date(),
-  });
-  const [hcData, setHcData] = useState({
-    id_zona: 1,
-    valor_actual: valhc,
-    valor_limite: 5,
-    fecha: new Date(),
-  });
-  const [combustibleData, setCombustibleData] = useState({
-    id_zona: 1,
-    valor: valLitros,
-    fecha: new Date(),
-  });
-  const [consumoData, setConsumoData] = useState({
-    id_zona: 1,
-    valor: valTEP,
-    fecha: new Date(),
-  });
-  const [energiaData, setEnergiaData] = useState({
-    id_zona: 1,
-    valor: valEnergia,
-    fecha: new Date(),
-  });
-  const [totalCo2Data, setTotalCo2Data] = useState({
-    id_zona: 1,
-    valor: co2,
-    fecha: new Date(),
-  });
+    setcontEco(Math.round(contadores['["ECO"]'] / fechaData / 24 || 0));
+    setcontCero(Math.round(contadores['["0"]'] / fechaData / 24 || 0));
+  }, [excelData, fechaData]);
 
   const handleChange = (e: any) => {
-    const { name, value } = e.target;
-    setCoData((prevData) => ({
-      ...prevData,
-      [name]: name === "fecha" ? new Date(value) : Number(value),
-    }));
-    setNo2Data((prevData) => ({
-      ...prevData,
-      [name]: name === "fecha" ? new Date(value) : Number(value),
-    }));
-    setPm25Data((prevData) => ({
-      ...prevData,
-      [name]: name === "fecha" ? new Date(value) : Number(value),
-    }));
-    setPm10Data((prevData) => ({
-      ...prevData,
-      [name]: name === "fecha" ? new Date(value) : Number(value),
-    }));
-    setHcData((prevData) => ({
-      ...prevData,
-      [name]: name === "fecha" ? new Date(value) : Number(value),
-    }));
-    setCombustibleData((prevData) => ({
-      ...prevData,
-      [name]: name === "fecha" ? new Date(value) : Number(value),
-    }));
-    setConsumoData((prevData) => ({
-      ...prevData,
-      [name]: name === "fecha" ? new Date(value) : Number(value),
-    }));
-    setEnergiaData((prevData) => ({
-      ...prevData,
-      [name]: name === "fecha" ? new Date(value) : Number(value),
-    }));
-    setTotalCo2Data((prevData) => ({
-      ...prevData,
-      [name]: name === "fecha" ? new Date(value) : Number(value),
-    }));
-
-    const selectedCameraId = parseInt(e.target.value, 10);
-
-    // Buscar la cámara seleccionada y obtener su id_zona
-    let zone = null;
+    let zone = 0;
     if (groupedCameras) {
       for (const cameras of Object.values(groupedCameras)) {
         const selectedCamera = cameras.find(
-          (cam) => cam.id === selectedCameraId
+          (cam) => cam.id === parseInt(e.target.value)
         );
         if (selectedCamera) {
           zone = selectedCamera.id_zona;
@@ -385,65 +284,11 @@ export const CalculadoraParticulas = ({ particulas }: Props) => {
       }
     }
 
+    setSelectedCameraId(parseInt(e.target.value));
     setSelectedZone(zone);
   };
 
-  const handleCalculate = () => {
-    setValNo2(
-      Math.round(
-        (contB +
-          contC * 0.75 +
-          contCero * 0.25 +
-          contEco * 0.5 +
-          contNoFigura * 1.25) *
-          0.0296894247647815 *
-          100
-      ) / 100
-    );
-    setValpm25(
-      Math.round(
-        (contB +
-          contC * 0.75 +
-          contCero * 0.25 +
-          contEco * 0.5 +
-          contNoFigura * 1.25) *
-          0.0121975681735219 *
-          100
-      ) / 100
-    );
-    setValpm10(
-      Math.round(
-        (contB +
-          contC * 0.75 +
-          contCero * 0.25 +
-          contEco * 0.5 +
-          contNoFigura * 1.25) *
-          0.0218523754575835 *
-          100
-      ) / 100
-    );
-    setValco(
-      Math.round(
-        (contB +
-          contC * 0.75 +
-          contCero * 0.25 +
-          contEco * 0.5 +
-          contNoFigura * 1.25) *
-          0.000257082275077134 *
-          100
-      ) / 100
-    );
-    setValhc(
-      Math.round(
-        (contB +
-          contC * 0.75 +
-          contCero * 0.25 +
-          contEco * 0.5 +
-          contNoFigura * 1.25) *
-          0.00148690555398458 *
-          100
-      ) / 100
-    );
+  const handleCalculate = useCallback(() => {
     const valorFactor1 =
       particulas > 0
         ? particulas / 2 / factor1
@@ -468,6 +313,71 @@ export const CalculadoraParticulas = ({ particulas }: Props) => {
           ) /
           2 /
           factor2;
+
+    const nuevosValores = {
+      no2:
+        Math.round(
+          (contB +
+            contC * 0.75 +
+            contCero * 0.25 +
+            contEco * 0.5 +
+            contNoFigura * 1.25) *
+            0.0296894247647815 *
+            100
+        ) / 100,
+      pm25:
+        Math.round(
+          (contB +
+            contC * 0.75 +
+            contCero * 0.25 +
+            contEco * 0.5 +
+            contNoFigura * 1.25) *
+            0.0121975681735219 *
+            100
+        ) / 100,
+      pm10:
+        Math.round(
+          (contB +
+            contC * 0.75 +
+            contCero * 0.25 +
+            contEco * 0.5 +
+            contNoFigura * 1.25) *
+            0.0218523754575835 *
+            100
+        ) / 100,
+      co:
+        Math.round(
+          (contB +
+            contC * 0.75 +
+            contCero * 0.25 +
+            contEco * 0.5 +
+            contNoFigura * 1.25) *
+            0.000257082275077134 *
+            100
+        ) / 100,
+      hc:
+        Math.round(
+          (contB +
+            contC * 0.75 +
+            contCero * 0.25 +
+            contEco * 0.5 +
+            contNoFigura * 1.25) *
+            0.00148690555398458 *
+            100
+        ) / 100,
+      combustible: Math.round(valorFactor1 + valorFactor2),
+      tep: Math.round(0.84 * valorFactor1 + 0.74 * valorFactor2),
+      energia: Math.round((0.84 * valorFactor1 + 0.74 * valorFactor2) * 11.63),
+      co2: Math.round(
+        Math.round(contCero * 0.6) +
+          Math.round(contEco * 0.72) +
+          Math.round(contC * 0.9) +
+          Math.round(contB * 1.02) +
+          Math.round(contNoFigura * 1.14)
+      ),
+    };
+
+    setValores(nuevosValores);
     setValLitros(Math.round(valorFactor1 + valorFactor2));
     setValTEP(Math.round(0.84 * valorFactor1 + 0.74 * valorFactor2));
     setValEnergia(
@@ -482,68 +392,16 @@ export const CalculadoraParticulas = ({ particulas }: Props) => {
           Math.round(contNoFigura * 1.14)
       )
     );
-  };
-
-  useEffect(() => {
-    setCoData((prevData) => ({
-      ...prevData,
-      valor_actual: valco,
-      fecha: new Date(),
-    }));
-    setNo2Data((prevData) => ({
-      ...prevData,
-      valor_actual: valNo2,
-      fecha: new Date(),
-    }));
-    setPm25Data((prevData) => ({
-      ...prevData,
-      valor_actual: valpm25,
-      fecha: new Date(),
-    }));
-    setPm10Data((prevData) => ({
-      ...prevData,
-      valor_actual: valpm10,
-      fecha: new Date(),
-    }));
-    setHcData((prevData) => ({
-      ...prevData,
-      valor_actual: valhc,
-      fecha: new Date(),
-    }));
-    setCombustibleData((prevData) => ({
-      ...prevData,
-      valor: valLitros,
-      fecha: new Date(),
-    }));
-    setConsumoData((prevData) => ({
-      ...prevData,
-      valor: valTEP,
-      fecha: new Date(),
-    }));
-    setEnergiaData((prevData) => ({
-      ...prevData,
-      valor: valEnergia,
-      fecha: new Date(),
-    }));
-    setTotalCo2Data((prevData) => ({
-      ...prevData,
-      valor: co2,
-      fecha: new Date(),
-    }));
-    console.log("CO2: " + co2);
   }, [
-    valco,
-    valNo2,
-    valpm25,
-    valpm10,
-    valhc,
-    valLitros,
-    valEnergia,
-    valTEP,
-    co2,
+    particulas,
+    factor1,
+    factor2,
+    contCero,
+    contEco,
+    contC,
+    contB,
+    contNoFigura,
   ]);
-  const [cameraList, setCameraList] = useState<Camera[]>();
-
   const handleCallCameras = async () => {
     try {
       const response = await fetch("http://localhost:3001/api/camaras", {
@@ -567,21 +425,62 @@ export const CalculadoraParticulas = ({ particulas }: Props) => {
   useEffect(() => {
     handleCallCameras();
   }, []);
-  const groupedCameras =
-    cameraList !== undefined &&
-    cameraList?.reduce<Record<number, Camera[]>>((acc, cam) => {
-      if (!acc[cam.id_zona]) {
-        acc[cam.id_zona] = [];
-      }
-      acc[cam.id_zona].push(cam);
-      return acc;
-    }, {});
+
+  const actualizarDatosCamaras = () => {
+    valUpdate.forEach((e) => {
+      createContaminacionCamara(e);
+      console.log(e.fecha);
+    });
+  };
+
+  const groupedCameras: { [id_zona: string]: Camera[] } = cameraList
+    ? cameraList.reduce((acc: { [key: string]: Camera[] }, cam: Camera) => {
+        const key = cam.id_zona.toString();
+        if (!acc[key]) {
+          acc[key] = [];
+        }
+        acc[key].push(cam);
+        return acc;
+      }, {})
+    : {};
+
+  useEffect(() => {
+    if (Array.isArray(contaminacionTotal)) {
+      const contaminantesArray = contaminacionTotal.map((item) => ({
+        contaminante: item.contaminante,
+        valor: item.valor,
+        fecha: item.fecha,
+        id_zona: item.id_zona,
+      }));
+
+      setCantidadContaminante(contaminantesArray);
+    }
+  }, [contaminacionTotal]);
+
+  useEffect(() => {}, [cantidadContaminante]);
+
+  const filteredData = cantidadContaminante.filter((item) => {
+    const itemDate = new Date(item.fecha);
+    const itemDateString = itemDate.toISOString().split("T")[0];
+
+    return (
+      addDays(itemDateString, 1).toISOString().split("T")[0] ===
+      date.toString().split("T")[0]
+    );
+  });
+
+  useEffect(() => {
+    if (excelData.length > 0) {
+      handleCalculate();
+      totalcontaminacion();
+    }
+  }, [excelData, handleCalculate, totalcontaminacion]);
 
   return (
     <div style={{ color: "#53a5dc", width: "60%" }}>
       Subir datos de contaminantes
       <form className="formulario" onSubmit={(e) => e.preventDefault()}>
-        <PickerDay></PickerDay>
+        <PickerDay fecha={handleDateChange}></PickerDay>
         <div className="tipo">
           <select id="id_zona" name="id_zona" onChange={handleChange}>
             {Object.entries(groupedCameras).map(([id_zona, cameras]) => (
@@ -595,11 +494,6 @@ export const CalculadoraParticulas = ({ particulas }: Props) => {
             ))}
           </select>
         </div>
-        {selectedZone && (
-          <div className="seleccionCamara">
-            La cámara seleccionada está en la Zona {selectedZone}
-          </div>
-        )}
         <div className="archivo">
           <input
             type="file"
@@ -610,94 +504,180 @@ export const CalculadoraParticulas = ({ particulas }: Props) => {
             onChange={handleFileInputChange}
           />
         </div>
-        <div className="tablas">
-          <table className="resultados">
-            <thead>
-              <tr>
-                <th>Contaminante</th>
-                <th>Contaminación cámara</th>
-                <th>Contaminación Total</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>NO2 (µg/m3/hora)</td>
-                <td></td>
-                <td className="val">
-                  {valNo2 === undefined ? "CARGANDO" : valNo2}
-                </td>
-              </tr>
-              <tr>
-                <td>PM25 (µg/m3/hora)</td>
-                <td></td>
-                <td className="val">
-                  {valpm25 === undefined ? "CARGANDO" : valpm25}
-                </td>
-              </tr>
-              <tr>
-                <td>PM10 (µg/m3/hora)</td>
-                <td></td>
-                <td className="val">
-                  {valpm10 === undefined ? "CARGANDO" : valpm10}
-                </td>
-              </tr>
-              <tr>
-                <td>CO (mg/m3/hora)</td>
-                <td></td>
-                <td className="val">
-                  {valco === undefined ? "CARGANDO" : valco}
-                </td>
-              </tr>
-              <tr>
-                <td>HC (µg/m3/hora)</td>
-                <td></td>
-                <td className="val">
-                  {valhc === undefined ? "CARGANDO" : valhc}
-                </td>
-              </tr>
-            </tbody>
-          </table>
-          <table className="consumo">
-            <thead>
-              <tr>
-                <th>Consumo</th>
-                <th>Consumo cámara</th>
-                <th>Consumo Total</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>Litros combustible</td>
-                <td></td>
-                <td className="val">{valLitros}</td>
-              </tr>
-              <tr>
-                <td>TEP</td>
-                <td></td>
-                <td className="val">{valTEP}</td>
-              </tr>
-              <tr>
-                <td>Energía (MWh)</td>
-                <td></td>
-                <td className="val">{valEnergia}</td>
-              </tr>
-              <tr>
-                <td>Kg/Co2/h</td>
-                <td></td>
-                <td className="val">{co2}</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+        {archivo && (
+          <div style={{ marginBottom: "2em" }}>Leyendo archivo...</div>
+        )}
+        {excelData.length > 0 && (
+          <div className="tablas">
+            <table className="resultados">
+              <thead>
+                <tr>
+                  <th>Contaminante</th>
+                  <th>Contaminación cámara</th>
+                  <th>Contaminación total Zona</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>NO2 (µg/m3/hora)</td>
+                  <td className="val">
+                    {valoresCamara.no2 === undefined
+                      ? "CARGANDO"
+                      : valoresCamara.no2}
+                  </td>
+                  <td className="val">
+                    {filteredData
+                      .filter(
+                        (item) =>
+                          item.contaminante === "no2" &&
+                          item.id_zona === selectedZone
+                      )
+                      .map((item) => `${item.valor}`)}
+                  </td>
+                </tr>
+                <tr>
+                  <td>PM25 (µg/m3/hora)</td>
+                  <td className="val">
+                    {valoresCamara.pm25 === undefined
+                      ? "CARGANDO"
+                      : valoresCamara.pm25}
+                  </td>
+                  <td className="val">
+                    {filteredData
+                      .filter(
+                        (item) =>
+                          item.contaminante === "pm25" &&
+                          item.id_zona === selectedZone
+                      )
+                      .map((item) => `${item.valor}`)}
+                  </td>
+                </tr>
+                <tr>
+                  <td>PM10 (µg/m3/hora)</td>
+                  <td className="val">
+                    {valoresCamara.pm10 === undefined
+                      ? "CARGANDO"
+                      : valoresCamara.pm10}
+                  </td>
+                  <td className="val">
+                    {filteredData
+                      .filter(
+                        (item) =>
+                          item.contaminante === "pm10" &&
+                          item.id_zona === selectedZone
+                      )
+                      .map((item) => `${item.valor}`)}
+                  </td>
+                </tr>
+                <tr>
+                  <td>CO (mg/m3/hora)</td>
+                  <td className="val">
+                    {valoresCamara.co === undefined
+                      ? "CARGANDO"
+                      : valoresCamara.co}
+                  </td>
+                  <td className="val">
+                    {filteredData
+                      .filter(
+                        (item) =>
+                          item.contaminante === "co" &&
+                          item.id_zona === selectedZone
+                      )
+                      .map((item) => `${item.valor}`)}
+                  </td>
+                </tr>
+                <tr>
+                  <td>HC (µg/m3/hora)</td>
+                  <td className="val">
+                    {valoresCamara.hc === undefined
+                      ? "CARGANDO"
+                      : valoresCamara.hc}
+                  </td>
+                  <td className="val">
+                    {filteredData
+                      .filter(
+                        (item) =>
+                          item.contaminante === "hc" &&
+                          item.id_zona === selectedZone
+                      )
+                      .map((item) => `${item.valor}`)}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+
+            {/* Otra tabla de consumo */}
+            <table className="consumo">
+              <thead>
+                <tr>
+                  <th>Consumo</th>
+                  <th>Consumo cámara</th>
+                  <th>Consumo total Zona</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Litros combustible</td>
+                  <td className="val">{valLitros}</td>
+                  <td className="val">
+                    {filteredData
+                      .filter(
+                        (item) =>
+                          item.contaminante === "combustible" &&
+                          item.id_zona === selectedZone
+                      )
+                      .map((item) => `${item.valor}`)}
+                  </td>
+                </tr>
+                <tr>
+                  <td>TEP</td>
+                  <td className="val">{valTEP}</td>
+                  <td className="val">
+                    {filteredData
+                      .filter(
+                        (item) =>
+                          item.contaminante === "tep" &&
+                          item.id_zona === selectedZone
+                      )
+                      .map((item) => `${item.valor}`)}
+                  </td>
+                </tr>
+                <tr>
+                  <td>Energía (MWh)</td>
+                  <td className="val">{valEnergia}</td>
+                  <td className="val">
+                    {filteredData
+                      .filter(
+                        (item) =>
+                          item.contaminante === "energia" &&
+                          item.id_zona === selectedZone
+                      )
+                      .map((item) => `${item.valor}`)}
+                  </td>
+                </tr>
+                <tr>
+                  <td>Kg/Co2/h</td>
+                  <td className="val">{co2}</td>
+                  <td className="val">
+                    {filteredData
+                      .filter(
+                        (item) =>
+                          item.contaminante === "co2" &&
+                          item.id_zona === selectedZone
+                      )
+                      .map((item) => `${item.valor}`)}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        )}
+
         <div className="botones">
-          <button type="button" onClick={handleCalculate}>
-            {archivo && "Leyendo archivo"}
-            {!archivo && "Calcular emisiones"}
-          </button>
           <button
             type="button"
             onClick={() => {
-              handleUploadDataBase();
+              actualizarDatosCamaras();
             }}
           >
             Subir a base de datos
