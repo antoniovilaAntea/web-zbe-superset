@@ -27,3 +27,17 @@
 .pie-chart-container {
   flex: 1;
 }
+.map .elemento-mapa {
+  width: 200px;
+  height: 200px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.elemento canvas,
+.elemento-mapa canvas {
+  max-width: 75%;
+  max-height: 75%;
+}

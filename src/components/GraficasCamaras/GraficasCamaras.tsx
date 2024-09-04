@@ -1,15 +1,11 @@
 import React from "react";
 import { Doughnut } from "react-chartjs-2";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
-
 import "./GraficasCamaras.css";
+
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 type Contaminante = "pm25" | "pm10" | "no2" | "co" | "hc";
-//   | "combustible"
-//   | "energia"
-//   | "co2"
-//   | "tep";
 
 interface DataItem {
   calle: string;
@@ -30,6 +26,8 @@ type Props = {
         | undefined
       )[]
     | undefined;
+  estilo: boolean;
+  calle?: string;
 };
 
 const colorMap: Record<Contaminante, string> = {
@@ -38,19 +36,30 @@ const colorMap: Record<Contaminante, string> = {
   no2: "#bc5090",
   co: "#ff6361",
   hc: "#ffa600",
-  //   combustible: "#f95d6a",
-  //   energia: "#ff7c43",
-  //   tep: "#ffa600",
-  //   co2: "#ffee55",
 };
 
-const PieChart: React.FC<{ datos: any }> = ({ datos }) => (
-  <Doughnut data={datos} />
-);
+const PieChart: React.FC<{ datos: any; mostrarLeyenda: boolean }> = ({
+  datos,
+  mostrarLeyenda,
+}) => {
+  const options = {
+    plugins: {
+      legend: {
+        display: mostrarLeyenda,
+      },
+    },
+  };
 
-const GraficasCamaras: React.FC<Props> = ({ data }) => {
+  return <Doughnut data={datos} options={options} />;
+};
+
+const GraficasCamaras: React.FC<Props> = ({ data, estilo, calle }) => {
   if (!data || data.length === 0) {
-    return <p>No hay datos de contaminación disponibles.</p>;
+    if (estilo) {
+      return <p>No hay datos de contaminación disponibles.</p>;
+    } else {
+      return <p>{calle}</p>;
+    }
   }
 
   const validData: DataItem[] = data.filter(
@@ -74,7 +83,7 @@ const GraficasCamaras: React.FC<Props> = ({ data }) => {
   );
 
   return (
-    <div className="contenedor">
+    <div className={estilo ? "contenedor" : "map"}>
       {Object.keys(groupedData).map((calle, index) => {
         const datosCalle = groupedData[calle];
 
@@ -97,9 +106,9 @@ const GraficasCamaras: React.FC<Props> = ({ data }) => {
         };
 
         return (
-          <div key={index} className="elemento">
+          <div key={index} className={estilo ? "elemento" : "elemento-mapa"}>
             <h4>{calle}</h4>
-            <PieChart datos={datos} />
+            <PieChart datos={datos} mostrarLeyenda={estilo} />
           </div>
         );
       })}

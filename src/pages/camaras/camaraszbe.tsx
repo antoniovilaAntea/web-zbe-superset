@@ -121,7 +121,7 @@ const Camaraszbe = () => {
         </button>
         <div>
           {graficas && (
-            <GraficasCamaras data={contaminationData}></GraficasCamaras>
+            <GraficasCamaras data={contaminationData} estilo></GraficasCamaras>
           )}
         </div>
       </div>

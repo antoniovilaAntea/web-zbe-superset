@@ -3,6 +3,7 @@ import "leaflet/dist/leaflet.css";
 import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
 import { DivIcon, LatLngExpression } from "leaflet";
 import { Camera } from "../../types/camera";
+import GraficasCamaras from "../GraficasCamaras/GraficasCamaras";
 
 type Props = {
   datos: Camera[] | undefined;
@@ -22,6 +23,7 @@ const MapCamaras = (props: Props) => {
     item !== undefined && contaminacionMap.set(item.calle, true);
   });
 
+  console.log(contaminacionData);
   const array = datos?.map((camaras) => [
     camaras.calle,
     camaras.coords.x,
@@ -51,6 +53,10 @@ const MapCamaras = (props: Props) => {
           iconAnchor: [7, 10],
         });
 
+        const dataFiltrada = contaminacionData?.filter(
+          (item) => item?.calle === calle
+        );
+
         return (
           <Marker
             key={index}
@@ -60,7 +66,13 @@ const MapCamaras = (props: Props) => {
             ]}
             icon={icono}
           >
-            <Popup>{calle}</Popup>
+            <Popup>
+              <GraficasCamaras
+                data={dataFiltrada}
+                estilo={false}
+                calle={calle}
+              ></GraficasCamaras>
+            </Popup>
           </Marker>
         );
       })}
