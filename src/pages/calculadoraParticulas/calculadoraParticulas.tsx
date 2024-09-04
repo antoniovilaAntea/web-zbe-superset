@@ -1,10 +1,10 @@
-import React, { useState, useEffect, useCallback } from "react";
-import * as XLSX from "xlsx";
-import { Camera } from "../../types/camera";
-import { PickerDay } from "../../components/DayPicker";
-import { ContaminacionTotal } from "../../types/contaminaciontotal";
-import { ContaminacionCamaras } from "../../types/contaminacioncamaras";
 import { addDays } from "date-fns";
+import React, { useCallback, useEffect, useState } from "react";
+import * as XLSX from "xlsx";
+import { PickerDay } from "../../components/DayPicker";
+import { Camera } from "../../types/camera";
+import { ContaminacionCamaras } from "../../types/contaminacioncamaras";
+import { ContaminacionTotal } from "../../types/contaminaciontotal";
 
 import "./calculadoraParticulas.css";
 
@@ -606,7 +606,6 @@ export const CalculadoraParticulas = ({ particulas }: Props) => {
               </tbody>
             </table>
 
-            {/* Otra tabla de consumo */}
             <table className="consumo">
               <thead>
                 <tr>

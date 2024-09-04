@@ -1,6 +1,5 @@
 import React from "react";
 import MapRuido from "../../components/Map/MapRuido";
-// import { fetchDataAndTransform } from "../../conection/Conexion";
 
 import "./monitorizacionRuido.css";
 
@@ -91,20 +90,9 @@ const MonitorizacionRuido = () => {
             </ul>
             <li>Zona 2:</li>
             <ul>
-              {/*onClick={fetchDataAndTransform}*/}
               <li>Alfonso Molina</li>
             </ul>
           </ul>
-
-          {/* <iframe
-            width="400"
-            height="600"
-            seamless
-            frameBorder="0"
-            scrolling="no"
-            //TODO: cambiar el gráfico del iframe para que sea el nuevo gráfico de la monitorizacion de Ruido que tengo que hacer
-            src="http://localhost:8088/superset/explore/p/rkVpXzr4yPJ/?standalone=1&height=600"
-          ></iframe> */}
         </div>
       </div>
       <div className="monitorizacion__texto">

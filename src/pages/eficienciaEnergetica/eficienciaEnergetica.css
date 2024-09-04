@@ -7,9 +7,9 @@
 
 .eficiencia {
   display: grid;
-  grid-template-columns: repeat(2, 1fr); /* Dos columnas */
-  grid-template-rows: auto auto; /* Dos filas */
-  gap: 20px; /* Espacio entre los gráficos */
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: auto auto;
+  gap: 20px;
   align-items: center;
   justify-content: center;
   div p {

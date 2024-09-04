@@ -17,7 +17,6 @@ const SuperficieContaminada = () => {
   const supTotal = "< " + (numsupZona1 + numsupZona2).toString();
   return (
     <div className="superficie">
-      {/* {//aun asi habrñia que cambair para identificar la zona y dentro del map cambiar el color de esa zona} */}
       <Map zona={zona}></Map>
       <table id="tablaSuperficie">
         <thead>
@@ -41,8 +40,6 @@ const SuperficieContaminada = () => {
             </td>
             <td>
               <label id="periodInteresC" />
-              {/* ACORDARSE DE QUE EL VALOR SOLO SE MUESTRE CUANDO EL VALOR DE
-              CONTAMINACION SEA MAYOR*/}
               {supZona1}
             </td>
             <td>
@@ -81,61 +78,6 @@ const SuperficieContaminada = () => {
               {pobTotal}
             </td>
           </tr>
-          {/* <tr>
-            <td>
-              <label id="sectionC" />
-            </td>
-            <td>
-              <label id="periodInteresC" />
-            </td>
-            <td>
-              <label id="superficieContaminadaC" />
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <label id="sectionC" />
-            </td>
-            <td>
-              <label id="periodInteresC" />
-            </td>
-            <td>
-              <label id="superficieContaminadaC" />
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <label id="sectionC" />
-            </td>
-            <td>
-              <label id="periodInteresC" />
-            </td>
-            <td>
-              <label id="superficieContaminadaC" />
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <label id="sectionC" />
-            </td>
-            <td>
-              <label id="periodInteresC" />
-            </td>
-            <td>
-              <label id="superficieContaminadaC" />
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <label id="sectionC" />
-            </td>
-            <td>
-              <label id="periodInteresC" />
-            </td>
-            <td>
-              <label id="superficieContaminadaC" />
-            </td>
-          </tr> */}
         </tbody>
       </table>
     </div>

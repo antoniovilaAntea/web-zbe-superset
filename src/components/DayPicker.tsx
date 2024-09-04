@@ -1,8 +1,7 @@
-import { useEffect, useId, useRef, useState } from "react";
+import { addDays, format, isValid, parse } from "date-fns";
 import { es } from "date-fns/locale";
-import { format, isValid, parse, addDays } from "date-fns";
+import React, { useEffect, useId, useRef, useState } from "react";
 import { DayPicker } from "react-day-picker";
-import React from "react";
 import "./DayPicker.css";
 
 type Props = {

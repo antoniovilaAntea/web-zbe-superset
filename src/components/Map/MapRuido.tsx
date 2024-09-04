@@ -1,7 +1,6 @@
-import React, { useEffect, useRef, useState } from "react";
-import { Map, marker, tileLayer } from "leaflet";
-import L from "leaflet";
+import L, { Map, marker, tileLayer } from "leaflet";
 import "leaflet/dist/leaflet.css";
+import React, { useEffect, useRef, useState } from "react";
 
 import "./MapRuido.css";
 
@@ -15,7 +14,6 @@ type Props = {
 };
 
 const MapRuido = ({ id, tipo, locations }: Props) => {
-  // MARKERS Crea los markers en cada uno de los puntos que queremos, con coord (LAT, LNG, nivel de ruido)
   const [map, setMap] = useState<Map>();
   const mapInit = useRef<boolean>(false);
 
@@ -43,7 +41,6 @@ const MapRuido = ({ id, tipo, locations }: Props) => {
   }
   const color = ["#64C800", "#FFFF00", "#FFCD69", "#FF8000", "#FF0000"];
 
-  // console.log("Valor: " + valor);
   const addMoreMarkers = () => {
     map &&
       locations.map((location) => {
@@ -90,7 +87,6 @@ const MapRuido = ({ id, tipo, locations }: Props) => {
 
   var lati = 0;
   var longi = 0;
-  // co-ordinates
   locations.map((marker) => {
     lati += marker[0];
     longi += marker[1];

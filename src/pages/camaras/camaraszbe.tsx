@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-import MapCamaras from "../../components/Map/MapCamaras";
-import GraficasCamaras from "../../components/GraficasCamaras/GraficasCamaras";
-import { Camera } from "../../types/camera";
 import { PickerDay } from "../../components/DayPicker";
+import GraficasCamaras from "../../components/GraficasCamaras/GraficasCamaras";
+import MapCamaras from "../../components/Map/MapCamaras";
+import { Camera } from "../../types/camera";
 
 import "./camaraszbe.css";
 

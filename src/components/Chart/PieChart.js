@@ -1,10 +1,10 @@
 import {
-  Chart as ChartJS,
   ArcElement,
   CategoryScale,
+  Chart as ChartJS,
   Legend,
-  Tooltip,
   Title,
+  Tooltip,
 } from "chart.js";
 import { Doughnut } from "react-chartjs-2";
 

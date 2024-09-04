@@ -1,7 +1,7 @@
-import React from "react";
-import "leaflet/dist/leaflet.css";
-import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
 import { DivIcon, LatLngExpression } from "leaflet";
+import "leaflet/dist/leaflet.css";
+import React from "react";
+import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
 import { Camera } from "../../types/camera";
 import GraficasCamaras from "../GraficasCamaras/GraficasCamaras";
 

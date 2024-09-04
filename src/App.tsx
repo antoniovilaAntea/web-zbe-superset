@@ -1,18 +1,19 @@
 import { Tab, Tabs } from "@mui/material";
 import React, { useState } from "react";
+
+import { CalculadoraParticulas } from "./pages/calculadoraParticulas/calculadoraParticulas.tsx";
+import CalculoDeEmisiones from "./pages/calculoDeEmisiones/calculoDeEmisiones.tsx";
+import Camaraszbe from "./pages/camaras/camaraszbe.tsx";
+import EficienciaEnergetica from "./pages/eficienciaEnergetica/eficienciaEnergetica.tsx";
+import ImpactoContaminacion from "./pages/impactoContaminacion/impactoContaminacion.tsx";
+import MonitorizacionRuido from "./pages/monitorizacionRuido/monitorizacionRuido.tsx";
+import NaturalezaContaminacion from "./pages/naturalezaContaminacion/naturalezaContaminacion.tsx";
+import PrincipalesContaminantes from "./pages/principalesContaminates/PrincipalesContaminantes.tsx";
+import SuperficieContaminada from "./pages/superficieContaminada/superficieContaminada.tsx";
 //@ts-ignore
 import pdfFile from "./resources/Emisiones contaminantes ZBE.pdf";
-import PrincipalesContaminantes from "./pages/principalesContaminates/PrincipalesContaminantes.tsx";
-import CalculoDeEmisiones from "./pages/calculoDeEmisiones/calculoDeEmisiones.tsx";
-import SuperficieContaminada from "./pages/superficieContaminada/superficieContaminada.tsx";
-import NaturalezaContaminacion from "./pages/naturalezaContaminacion/naturalezaContaminacion.tsx";
-import EficienciaEnergetica from "./pages/eficienciaEnergetica/eficienciaEnergetica.tsx";
-import MonitorizacionRuido from "./pages/monitorizacionRuido/monitorizacionRuido.tsx";
-import ImpactoContaminacion from "./pages/impactoContaminacion/impactoContaminacion.tsx";
-import { CalculadoraParticulas } from "./pages/calculadoraParticulas/calculadoraParticulas.tsx";
 
 import "./App.css";
-import Camaraszbe from "./pages/camaras/camaraszbe.tsx";
 
 function App() {
   const [value, setValue] = React.useState("contaminantes");

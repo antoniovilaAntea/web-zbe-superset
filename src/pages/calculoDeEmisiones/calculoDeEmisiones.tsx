@@ -146,7 +146,6 @@ const CalculoDeEmisiones = ({ funcion }: Props) => {
           Esta información puede sufrir variaciones tras su validación
           definitiva.
         </p>
-        {/* <Bar options={options} data={data}></Bar> */}
       </div>
     </div>
   );
