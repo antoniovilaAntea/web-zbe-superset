@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Map from "../../components/Map/Map.tsx";
+import Mapa from "../../components/Map/Map.tsx";
 
 import "./superficieContaminada.css";
 
@@ -17,7 +17,7 @@ const SuperficieContaminada = () => {
   const supTotal = "< " + (numsupZona1 + numsupZona2).toString();
   return (
     <div className="superficie">
-      <Map zona={zona}></Map>
+      <Mapa zona={zona}></Mapa>
       <table id="tablaSuperficie">
         <thead>
           <tr>

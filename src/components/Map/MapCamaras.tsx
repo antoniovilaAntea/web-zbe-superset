@@ -23,7 +23,6 @@ const MapCamaras = (props: Props) => {
     item !== undefined && contaminacionMap.set(item.calle, true);
   });
 
-  console.log(contaminacionData);
   const array = datos?.map((camaras) => [
     camaras.calle,
     camaras.coords.x,
@@ -59,7 +58,7 @@ const MapCamaras = (props: Props) => {
 
         return (
           <Marker
-            key={index}
+            key={parseFloat(location[1].toString())}
             position={[
               parseFloat(location[1].toString()),
               parseFloat(location[2].toString()),

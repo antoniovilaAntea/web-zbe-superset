@@ -57,7 +57,6 @@ export const CalculadoraParticulas = ({ particulas }: Props) => {
 
   const handleDateChange = (date: Date | string) => {
     setDate(date);
-    console.log("Date: " + date);
     totalcontaminacion();
   };
 
@@ -257,7 +256,6 @@ export const CalculadoraParticulas = ({ particulas }: Props) => {
         contadores[key] = 1;
       }
     }
-    console.log("Fecha Data: " + fechaData);
     setcontB(Math.round(contadores['["B"]'] / fechaData / 24 || 0));
     setcontC(Math.round(contadores['["C"]'] / fechaData / 24 || 0));
     setcontNoFigura(
@@ -429,7 +427,6 @@ export const CalculadoraParticulas = ({ particulas }: Props) => {
   const actualizarDatosCamaras = () => {
     valUpdate.forEach((e) => {
       createContaminacionCamara(e);
-      console.log(e.fecha);
     });
   };
 

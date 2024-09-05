@@ -6,9 +6,6 @@ import "./MapRuido.css";
 
 type Props = {
   id: string;
-  lat?: number;
-  lng?: number;
-  ruido?: number;
   tipo: string;
   locations: any[];
 };
@@ -44,14 +41,17 @@ const MapRuido = ({ id, tipo, locations }: Props) => {
   const addMoreMarkers = () => {
     map &&
       locations.map((location) => {
-        const valor =
-          tipo === "ld"
-            ? location[2]
-            : tipo === "le"
-            ? location[3]
-            : tipo === "ln"
-            ? location[4]
-            : location[5];
+        let valor;
+
+        if (tipo === "ld") {
+          valor = location[2];
+        } else if (tipo === "le") {
+          valor = location[3];
+        } else if (tipo === "ln") {
+          valor = location[4];
+        } else {
+          valor = location[5];
+        }
         if (valor <= 55) {
           return marker([location[0], location[1]])
             .setIcon(colorMarker(color[0]))
@@ -85,8 +85,8 @@ const MapRuido = ({ id, tipo, locations }: Props) => {
       });
   };
 
-  var lati = 0;
-  var longi = 0;
+  let lati = 0;
+  let longi = 0;
   locations.map((marker) => {
     lati += marker[0];
     longi += marker[1];

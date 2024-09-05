@@ -7,7 +7,7 @@ type Props = {
   zona: string;
 };
 
-const Map = (props: Props) => {
+const Mapa = (props: Props) => {
   const [zona, setZona] = useState("");
 
   useEffect(() => {
@@ -131,4 +131,4 @@ const Map = (props: Props) => {
   );
 };
 
-export default Map;
+export default Mapa;

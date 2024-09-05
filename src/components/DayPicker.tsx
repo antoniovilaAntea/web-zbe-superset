@@ -8,7 +8,7 @@ type Props = {
   fecha: (data: Date | string) => void;
 };
 
-export function PickerDay({ fecha }: Props) {
+export function PickerDay({ fecha }: Readonly<Props>) {
   const dialogRef = useRef<HTMLDialogElement>(null);
   const dialogId = useId();
   const headerId = useId();
@@ -90,7 +90,6 @@ export function PickerDay({ fecha }: Props) {
         <i className="fa-regular fa-calendar-days"></i>
       </button>
       <dialog
-        role="dialog"
         ref={dialogRef}
         id={dialogId}
         aria-modal

@@ -106,7 +106,7 @@ const GraficasCamaras: React.FC<Props> = ({ data, estilo, calle }) => {
         };
 
         return (
-          <div key={index} className={estilo ? "elemento" : "elemento-mapa"}>
+          <div key={calle} className={estilo ? "elemento" : "elemento-mapa"}>
             <h4>{calle}</h4>
             <PieChart datos={datos} mostrarLeyenda={estilo} />
           </div>
