@@ -15,7 +15,7 @@ function PrincipalesContaminantes() {
             title="PM 2.5"
             frameBorder="0"
             scrolling="no"
-            src="http://localhost:8088/superset/explore/p/KQ64vO6lwyX/?standalone=1&height=400"
+            src="http://localhost:8088/superset/explore/p/Vj5A9GeDNzG/?standalone=1&height=400"
           ></iframe>
           <p className="info">
             Esta información puede sufrir variaciones tras su validación
@@ -31,7 +31,7 @@ function PrincipalesContaminantes() {
             title="PM 10"
             frameBorder="0"
             scrolling="no"
-            src="http://localhost:8088/superset/explore/p/7KVpKPONPBL/?standalone=1&height=400"
+            src="http://localhost:8088/superset/explore/p/d5n9A6EoYgB/?standalone=1&height=400"
           ></iframe>
           <p className="info">
             Esta información puede sufrir variaciones tras su validación
@@ -47,7 +47,7 @@ function PrincipalesContaminantes() {
             title="no2"
             frameBorder="0"
             scrolling="no"
-            src="http://localhost:8088/superset/explore/p/6qD4DAYlAjG/?standalone=1&height=400"
+            src="http://localhost:8088/superset/explore/p/GQ6m35RoVba/?standalone=1&height=400"
           ></iframe>
           <p className="info">
             Esta información puede sufrir variaciones tras su validación
@@ -65,7 +65,7 @@ function PrincipalesContaminantes() {
             title="HC"
             frameBorder="0"
             scrolling="no"
-            src="http://localhost:8088/superset/explore/p/OGZl36A4w3q/?standalone=1&height=400"
+            src="http://localhost:8088/superset/explore/p/vEWmVpZol26/?standalone=1&height=400"
           ></iframe>
           <p className="info">
             Esta información puede sufrir variaciones tras su validación
@@ -81,7 +81,7 @@ function PrincipalesContaminantes() {
             title="CO"
             frameBorder="0"
             scrolling="no"
-            src="http://localhost:8088/superset/explore/p/39Zld334JO2/?standalone=1&height=400"
+            src="http://localhost:8088/superset/explore/p/yMjm53Wo2Pg/?standalone=1&height=400"
           ></iframe>
           <p className="info">
             Esta información puede sufrir variaciones tras su validación

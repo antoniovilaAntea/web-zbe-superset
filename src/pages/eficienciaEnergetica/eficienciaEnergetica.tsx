@@ -11,7 +11,7 @@ const EficienciaEnergetica = () => {
           width="700px"
           frameBorder={0}
           title="Emisiones"
-          src="http://localhost:8088/superset/explore/p/GOXpR0Rq4Wd/?standalone=3&height=350"
+          src="http://localhost:8088/superset/explore/p/y24LoPxoR18/?standalone=3&height=350"
         ></iframe>
         <p>Emisiones (Tn CO²/hora)</p>
       </div>
@@ -21,7 +21,7 @@ const EficienciaEnergetica = () => {
           width="700px"
           frameBorder={0}
           title="Consumo"
-          src="http://localhost:8088/superset/explore/p/E7aN88PbN9y/?standalone=3&height=350"
+          src="http://localhost:8088/superset/explore/p/3O7DjgYmVkv/?standalone=3&height=350"
         ></iframe>
         <p>Consumo (TEP/hora)</p>
       </div>
@@ -31,7 +31,7 @@ const EficienciaEnergetica = () => {
           width="700px"
           title="Combustible"
           frameBorder={0}
-          src="http://localhost:8088/superset/explore/p/zXVloWjvlZd/?standalone=3&height=350"
+          src="http://localhost:8088/superset/explore/p/bLOo2V5o0p3/?standalone=3&height=350"
         ></iframe>
         <p>Combustible (litros)</p>
       </div>
@@ -41,7 +41,7 @@ const EficienciaEnergetica = () => {
           width="700px"
           frameBorder={0}
           title="Energia"
-          src="http://localhost:8088/superset/explore/p/LgeN2mo7pxk/?standalone=3&height=350"
+          src="http://localhost:8088/superset/explore/p/jRdD4Zg96BQ/?standalone=3&height=350"
         ></iframe>
         <p>Energía consumida (MWh/hora)</p>
       </div>
