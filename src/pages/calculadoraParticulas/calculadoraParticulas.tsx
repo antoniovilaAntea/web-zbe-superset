@@ -301,7 +301,7 @@ export const CalculadoraParticulas = ({ particulas }: Props) => {
           factor1;
     const valorFactor2 =
       particulas > 0
-        ? particulas / 2 / factor1
+        ? particulas / 2 / factor2
         : Math.round(
             contCero * 0.6 +
               contEco * 0.72 +
