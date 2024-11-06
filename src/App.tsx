@@ -19,6 +19,22 @@ import "./App.css";
 function App() {
   const [value, setValue] = React.useState("contaminantes");
   const [particulas, setParticulas] = useState<number>(0);
+  const [cadaCoches, setCadaCoches] = useState<{
+    cero: number;
+    eco: number;
+    c: number;
+    b: number;
+    noDistintivo: number;
+  }>({ cero: 0, eco: 0, c: 0, b: 0, noDistintivo: 0 });
+  const meterDatosCoches = (cadaCoches: {
+    cero: number;
+    eco: number;
+    c: number;
+    b: number;
+    noDistintivo: number;
+  }) => {
+    setCadaCoches(cadaCoches);
+  };
   const cogerDatosParticulas = (datos: number) => {
     setParticulas(datos);
   };
@@ -78,7 +94,10 @@ function App() {
         </Tabs>
         {value === "contaminantes" && <PrincipalesContaminantes />}
         {value === "calculo" && (
-          <CalculoDeEmisiones funcion={cogerDatosParticulas} />
+          <CalculoDeEmisiones
+            coches={cadaCoches}
+            funcion={cogerDatosParticulas}
+          />
         )}
         {value === "superficie" && <SuperficieContaminada />}
         {value === "naturaleza" && <NaturalezaContaminacion />}
@@ -86,7 +105,12 @@ function App() {
         {value === "eficiencia" && <EficienciaEnergetica />}
         {value === "monitorizacion" && <MonitorizacionRuido />}
         {value === "camaras" && <Camaraszbe />}
-        {value === "Admin" && <CalculadoraParticulas particulas={particulas} />}
+        {value === "Admin" && (
+          <CalculadoraParticulas
+            funcion={meterDatosCoches}
+            particulas={particulas}
+          />
+        )}
       </div>
     </div>
   );

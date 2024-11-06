@@ -3,17 +3,23 @@ import React, { useCallback, useEffect, useState } from "react";
 import * as XLSX from "xlsx";
 import { PickerDay } from "../../components/DayPicker";
 import { Camera } from "../../types/camera";
-import { ContaminacionCamaras } from "../../types/contaminacioncamaras";
 import { ContaminacionTotal } from "../../types/contaminaciontotal";
 
 import "./calculadoraParticulas.css";
 
 type Props = {
   particulas: number;
+  funcion: (particulas: {
+    cero: number;
+    eco: number;
+    c: number;
+    b: number;
+    noDistintivo: number;
+  }) => void;
 };
 
-export const CalculadoraParticulas = ({ particulas }: Props) => {
-  const [valoresCamara, setValores] = useState({
+export const CalculadoraParticulas = ({ particulas, funcion }: Props) => {
+  const [valoresCamara, setValoresCamara] = useState({
     co: 0,
     no2: 0,
     pm25: 0,
@@ -36,18 +42,16 @@ export const CalculadoraParticulas = ({ particulas }: Props) => {
   const [fechaData, setFechaData] = useState<any>([]);
   const [archivo, setArchivo] = useState<boolean>(false);
 
-  const [contB, setcontB] = useState(0);
-  const [contC, setcontC] = useState(0);
-  const [contNoFigura, setcontNoFigura] = useState(0);
-  const [contEco, setcontEco] = useState(0);
-  const [contCero, setcontCero] = useState(0);
+  const [contB, setContB] = useState(0);
+  const [contC, setContC] = useState(0);
+  const [contNoFigura, setContNoFigura] = useState(0);
+  const [contEco, setContEco] = useState(0);
+  const [contCero, setContCero] = useState(0);
 
   const [cameraList, setCameraList] = useState<Camera[]>();
 
   const [contaminacionTotal, setContaminacionTotal] =
     useState<ContaminacionTotal>();
-  const [contaminacionCamaras, setContaminacionCamaras] =
-    useState<ContaminacionCamaras>();
   const [selectedZone, setSelectedZone] = useState<number>(0);
   const [selectedCameraId, setSelectedCameraId] = useState<number>(0);
   const [date, setDate] = useState<Date | string>("");
@@ -233,10 +237,10 @@ export const CalculadoraParticulas = ({ particulas }: Props) => {
       const combinedData = allData.flat().map((row: any) => [row[5]]);
       setExcelData(combinedData);
       const fechaCombinedData = allData.flat().map((row: any) => [row[9]]);
-      var fechaGrande = new Date(
+      let fechaGrande = new Date(
         fechaCombinedData[fechaCombinedData.length - 1].toString()
       ).getTime();
-      var fechaPeque = new Date(fechaCombinedData[2].toString()).getTime();
+      let fechaPeque = new Date(fechaCombinedData[2].toString()).getTime();
       const diferencia = Math.round((fechaGrande - fechaPeque) / 86400000);
 
       setFechaData(diferencia);
@@ -256,16 +260,16 @@ export const CalculadoraParticulas = ({ particulas }: Props) => {
         contadores[key] = 1;
       }
     }
-    setcontB(Math.round(contadores['["B"]'] / fechaData / 24 || 0));
-    setcontC(Math.round(contadores['["C"]'] / fechaData / 24 || 0));
-    setcontNoFigura(
+    setContB(Math.round(contadores['["B"]'] / fechaData / 24 || 0));
+    setContC(Math.round(contadores['["C"]'] / fechaData / 24 || 0));
+    setContNoFigura(
       Math.round(
         (contadores['["NO FIGURA EN BBDD DGT"]'] / fechaData / 24 || 0) +
           (contadores['["SIN DISTINTIVO"]'] / fechaData / 24 || 0)
       )
     );
-    setcontEco(Math.round(contadores['["ECO"]'] / fechaData / 24 || 0));
-    setcontCero(Math.round(contadores['["0"]'] / fechaData / 24 || 0));
+    setContEco(Math.round(contadores['["ECO"]'] / fechaData / 24 || 0));
+    setContCero(Math.round(contadores['["0"]'] / fechaData / 24 || 0));
   }, [excelData, fechaData]);
 
   const handleChange = (e: any) => {
@@ -375,7 +379,7 @@ export const CalculadoraParticulas = ({ particulas }: Props) => {
       ),
     };
 
-    setValores(nuevosValores);
+    setValoresCamara(nuevosValores);
     setValLitros(Math.round(valorFactor1 + valorFactor2));
     setValTEP(Math.round(0.84 * valorFactor1 + 0.74 * valorFactor2));
     setValEnergia(
@@ -390,6 +394,14 @@ export const CalculadoraParticulas = ({ particulas }: Props) => {
           Math.round(contNoFigura * 1.14)
       )
     );
+
+    funcion({
+      cero: contCero,
+      c: contC,
+      b: contB,
+      eco: contEco,
+      noDistintivo: contNoFigura,
+    });
   }, [
     particulas,
     factor1,
