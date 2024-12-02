@@ -6,7 +6,7 @@
     "@emotion/react": "^11.11.3",
     "@emotion/styled": "^11.11.0",
     "@fortawesome/fontawesome-free": "^6.6.0",
-    "@mui/material": "^5.15.11",
+    "@mui/material": "^5.16.7",
     "@mui/styled-engine-sc": "^6.0.0-alpha.17",
     "@superset-ui/embedded-sdk": "^0.1.0-alpha.10",
     "@testing-library/jest-dom": "^5.17.0",
