@@ -168,13 +168,13 @@ const Mapa = (props: Props) => {
           <Tooltip sticky>Zona 1</Tooltip>
         </Polygon>
       ) : (
-        <Polygon positions={zona1} color={"#3388FF"}>
+        <Polygon positions={zona1} color={"#4B3D84"}>
           <Tooltip sticky>Zona 1</Tooltip>
         </Polygon>
       )}
       <Polygon
         positions={zona2}
-        color={zona.includes("2") ? "#BDD72E" : "#61dafb"}
+        color={zona.includes("2") ? "#BDD72E" : "#43939A"}
       >
         <Tooltip sticky>Zona 2</Tooltip>
       </Polygon>
