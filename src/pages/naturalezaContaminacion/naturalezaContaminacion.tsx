@@ -19,18 +19,6 @@ const NaturalezaContaminacion = () => {
         </div>
         <div className="naturaleza__graphs">
           <div className="naturaleza__graphs__first">
-            <div className="naturaleza__graphs__first__one">
-              <p>Actividad industrial</p>
-              <iframe
-                title="industria"
-                width="600"
-                height="400"
-                seamless
-                frameBorder="0"
-                scrolling="no"
-                src="http://localhost:8088/superset/explore/p/VxA90ZlDBrR/?standalone=1&height=400"
-              ></iframe>
-            </div>
             <div className="naturaleza__graphs__first__two">
               <p>Trafico rodado</p>
               <iframe
@@ -44,18 +32,7 @@ const NaturalezaContaminacion = () => {
               ></iframe>
             </div>
           </div>
-          <div className="naturaleza__graphs__second">
-            <p>Actividad portuaria</p>
-            <iframe
-              title="puertos"
-              width="600"
-              height="400"
-              seamless
-              frameBorder="0"
-              scrolling="no"
-              src="http://localhost:8088/superset/explore/p/6M39xgKmLbE/?standalone=1&height=400"
-            ></iframe>
-          </div>
+          
         </div>
       </div>
     </>
